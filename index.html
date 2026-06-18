@@ -1,272 +1,1976 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Shee's Kitchen | Complete Cake Collection</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; color: #2e241f; line-height: 1.5; background: #fef7f0; overflow-x: hidden; }
-    .global-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.pexels.com/photos/683039/pexels-photo-683039.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; background-position: center; opacity: 0.3; z-index: -2; }
-    .global-bg-primary { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.pexels.com/photos/1860203/pexels-photo-1860203.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; background-position: center; opacity: 0.7; z-index: -1; }
-    .content-foreground { position: relative; z-index: 1; }
-    .navbar-lux { background: rgba(255, 248, 240, 0.95); backdrop-filter: blur(12px); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px; }
-    .logo-fresh { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #bc7a5a, #9b5e42); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .nav-links-desktop { display: flex; gap: 24px; }
-    .nav-links-desktop a, .nav-links-mobile a { text-decoration: none; font-weight: 500; color: #5c3e2e; cursor: pointer; }
-    .cart-icon { background: rgba(248, 237, 230, 0.9); padding: 6px 16px; border-radius: 60px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; }
-    .hamburger-btn { display: none; background: rgba(248, 237, 230, 0.9); border: none; font-size: 1.4rem; padding: 6px 12px; border-radius: 40px; cursor: pointer; }
-    .nav-links-mobile { position: fixed; top: 0; left: -100%; width: 70%; max-width: 260px; height: 100%; background: rgba(255, 251, 247, 0.98); backdrop-filter: blur(16px); flex-direction: column; padding: 80px 24px 30px; gap: 24px; transition: left 0.3s; z-index: 200; display: flex; }
-    .nav-links-mobile.open { left: 0; }
-    .nav-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 199; display: none; }
-    .nav-overlay.open { display: block; }
-    .hero-full-fixed { min-height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; background: rgba(0,0,0,0.4); }
-    .hero-content { max-width: 900px; padding: 40px 20px; color: white; }
-    .shee-logo { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700; margin-bottom: 20px; }
-    .elegant-tag { font-size: 0.8rem; letter-spacing: 6px; text-transform: uppercase; background: rgba(0,0,0,0.3); display: inline-block; padding: 6px 24px; border-radius: 60px; margin-bottom: 24px; }
-    .hero-description { font-size: 1.1rem; max-width: 650px; margin: 0 auto 24px; }
-    .btn-primary { background: #c26e4a; border: none; padding: 12px 28px; border-radius: 60px; font-weight: 600; color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
-    .btn-primary:hover { background: #a85733; }
-    .btn-outline { background: rgba(0,0,0,0.3); border: 2px solid white; padding: 12px 28px; border-radius: 60px; font-weight: 600; color: white; cursor: pointer; }
-    .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
-    .section-title { text-align: center; margin: 50px 0 20px; }
-    .section-title h2 { font-family: 'Playfair Display', serif; font-size: 2rem; background: rgba(255,250,244,0.85); display: inline-block; padding: 8px 24px; border-radius: 60px; color: #7a4c34; }
-    .category-dropdown-wrapper { text-align: center; margin: 20px 0 30px; }
-    .category-select { background: white; border: 1px solid #eedbcb; padding: 12px 24px; border-radius: 60px; font-size: 0.9rem; font-weight: 600; color: #5c3e2e; width: auto; min-width: 280px; cursor: pointer; }
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin: 40px 0; }
-    .product-card { background: rgba(255,255,255,0.95); border-radius: 28px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transition: 0.2s; }
-    .product-card:hover { transform: translateY(-5px); }
-    .product-img { height: 210px; background-size: cover; background-position: center; }
-    .product-info { padding: 18px; }
-    .product-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
-    .badge { background: #f0e0d4; display: inline-block; padding: 4px 12px; border-radius: 60px; font-size: 0.65rem; font-weight: 600; margin-bottom: 10px; }
-    .story-icon { font-size: 0.75rem; color: #c26e4a; background: #fef2ea; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 60px; margin: 10px 0; cursor: pointer; width: fit-content; }
-    .weight-select select { width: 100%; padding: 8px 12px; border-radius: 60px; border: 1px solid #eedbcb; background: white; margin: 8px 0; }
-    .price-dynamic { font-weight: 700; font-size: 1.2rem; color: #c26e4a; margin: 10px 0; }
-    .add-to-cart-btn { background: #c26e4a; width: 100%; padding: 10px; border: none; border-radius: 60px; color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-    .features { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; background: rgba(255,248,242,0.9); border-radius: 60px; padding: 40px 20px; margin: 50px 0; }
-    .feature { text-align: center; flex: 1 1 140px; }
-    .feature i { font-size: 2rem; color: #c28a5c; margin-bottom: 10px; }
-    .carousel-section { margin: 40px 0; border-radius: 40px; overflow: hidden; }
-    .carousel-container { position: relative; height: 360px; overflow: hidden; }
-    .carousel-slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s; object-fit: cover; }
-    .carousel-slide.active { opacity: 1; }
-    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
-    .carousel-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 20px; color: white; text-align: center; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 20px; margin: 40px 0; }
-    .gallery-item { border-radius: 24px; overflow: hidden; height: 170px; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
-    .cart-sidebar { position: fixed; top: 0; right: -100%; width: 90%; max-width: 380px; height: 100%; background: white; z-index: 300; transition: 0.3s; display: flex; flex-direction: column; box-shadow: -5px 0 20px rgba(0,0,0,0.1); }
-    .cart-sidebar.open { right: 0; }
-    .cart-sidebar h3 { padding: 20px; border-bottom: 1px solid #eee; }
-    .cart-items-scroll { flex: 1; overflow-y: auto; padding: 20px; }
-    .cart-footer { padding: 20px; border-top: 1px solid #eee; }
-    .cart-item-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; }
-    .cart-item-img { width: 55px; height: 55px; border-radius: 16px; object-fit: cover; }
-    .cart-item-details { flex: 1; }
-    .trash-icon { color: #c26e4a; cursor: pointer; }
-    .cart-total-text { text-align: right; font-weight: 700; font-size: 1.2rem; margin: 12px 0; }
-    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 250; display: none; }
-    .cart-overlay.open { display: block; }
-    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); z-index: 400; align-items: center; justify-content: center; }
-    .modal-content { background: white; max-width: 460px; width: 90%; border-radius: 40px; padding: 24px; max-height: 90vh; overflow-y: auto; }
-    .story-modal-img { height: 200px; background-size: cover; background-position: center; border-radius: 24px; margin-bottom: 16px; }
-    .float-wa, .float-top { position: fixed; bottom: 20px; right: 20px; z-index: 150; }
-    .float-top { right: auto; left: 20px; }
-    .whatsapp-btn, .top-btn { width: 48px; height: 48px; border-radius: 50%; background: #25D366; color: white; font-size: 24px; border: none; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    .top-btn { background: #c26e4a; }
-    .toast-msg { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #2e241f; color: white; padding: 8px 20px; border-radius: 60px; opacity: 0; transition: 0.2s; pointer-events: none; z-index: 500; }
-    .toast-msg.show { opacity: 1; bottom: 100px; }
-    .footer-elegant { background: rgba(245,235,227,0.95); padding: 40px 0 20px; margin-top: 60px; }
-    .footer-inner { display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between; margin-bottom: 30px; }
-    .footer-col { flex: 1 1 160px; }
-    .footer-col h4 { font-family: 'Playfair Display', serif; margin-bottom: 12px; color: #b05f3e; }
-    .footer-col a, .footer-col p { display: block; font-size: 0.8rem; color: #5c3b2a; text-decoration: none; margin-bottom: 6px; }
-    .news-input-wrapper { display: flex; background: white; border-radius: 60px; overflow: hidden; border: 1px solid #eedbcb; margin-top: 10px; }
-    .news-input-wrapper input { flex: 1; padding: 8px 12px; border: none; outline: none; }
-    .news-input-wrapper button { background: #c26e4a; border: none; padding: 8px 16px; color: white; cursor: pointer; }
-    .custom-cake-highlight { margin: 40px 0 30px; background: linear-gradient(135deg, rgba(255,245,238,0.98), rgba(255,250,240,0.98)); border-radius: 56px; padding: 30px 24px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); }
-    .custom-cake-header { text-align: center; margin-bottom: 28px; }
-    .custom-cake-header h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #7a4c34; background: #fff0e6; display: inline-block; padding: 5px 30px; border-radius: 60px; }
-    .custom-studio-grid { display: flex; flex-wrap: wrap; gap: 30px; align-items: center; justify-content: center; }
-    .custom-form-modern { flex: 2; min-width: 280px; background: white; padding: 24px; border-radius: 48px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-    .custom-form-modern input, .custom-form-modern select, .custom-form-modern textarea { width: 100%; margin: 12px 0; padding: 14px 18px; border-radius: 80px; border: 1px solid #eedbcb; background: #fffdfa; font-family: 'Inter', sans-serif; }
-    .custom-form-modern textarea { border-radius: 28px; resize: vertical; }
-    .btn-custom-wa { background: #25D366; color: white; width: 100%; border: none; padding: 14px; border-radius: 60px; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
-    @media (max-width: 760px) {
-      .nav-links-desktop { display: none; }
-      .hamburger-btn { display: block; }
-      .shee-logo { font-size: 2.8rem; }
-      .carousel-container { height: 260px; }
-      .products-grid { grid-template-columns: 1fr; }
-      .category-select { width: 90%; }
-      .custom-studio-grid { flex-direction: column; }
-    }
-  </style>
-</head>
-<body>
-<div class="global-bg"></div><div class="global-bg-primary"></div>
-<div class="content-foreground">
-  <nav class="navbar-lux">
-    <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
-    <div class="logo-fresh">Shee's Kitchen</div>
-    <div class="nav-links-desktop"><a href="#home">Home</a><a href="#shop">Shop</a><a href="#gallery">Gallery</a><a id="customCakeNavDesktop">Custom Cake</a></div>
-    <div class="cart-icon" id="cartIcon"><i class="fas fa-shopping-bag"></i> <span id="cartCount">0</span></div>
-  </nav>
-  <div class="nav-links-mobile" id="navLinksMobile"><a href="#home">Home</a><a href="#shop">Shop</a><a href="#gallery">Gallery</a><a id="customCakeNavMobile">Custom Cake</a></div>
-  <div class="nav-overlay" id="navOverlay"></div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>SIHB BANK — Smart Investors Sender Bank</title>
+        <!-- Font Awesome 6 (Free) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <script src="https://cdn.tailwindcss.com">
+        </script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js">
+        </script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Inter', -apple-system, sans-serif;
+                background: #0a0a0a;
+                color: #f0f0f5;
+                overflow-x: hidden;
+                -webkit-font-smoothing: antialiased;
+            }
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #0a0a0a;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(180deg, #dc2626, #ef4444);
+                border-radius: 10px;
+            }
+            .glass {
+                background: rgba(255, 255, 255, 0.02);
+                backdrop-filter: blur(24px);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .glass-light {
+                background: rgba(255, 255, 255, 0.03);
+                backdrop-filter: blur(16px);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .text-gradient {
+                background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .text-gradient-glow {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #fca5a5 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-shadow: 0 0 80px rgba(220, 38, 38, 0.2);
+            }
+            .btn-primary {
+                background: linear-gradient(135deg, #dc2626, #ef4444);
+                box-shadow: 0 4px 40px rgba(220, 38, 38, 0.25);
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+                position: relative;
+                overflow: hidden;
+            }
+            .btn-primary::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, #ef4444, #dc2626);
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                border-radius: inherit;
+            }
+            .btn-primary:hover::before {
+                opacity: 1;
+            }
+            .btn-primary:hover {
+                transform: translateY(-2px) scale(1.02);
+                box-shadow: 0 8px 60px rgba(220, 38, 38, 0.4);
+            }
+            .btn-primary span {
+                position: relative;
+                z-index: 1;
+            }
+            .btn-google-play {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 20px;
+                border-radius: 12px;
+                color: #fff;
+                font-weight: 500;
+                font-size: 14px;
+            }
+            .btn-google-play:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.15);
+                transform: translateY(-2px);
+            }
+            .btn-google-play svg {
+                width: 28px;
+                height: 28px;
+            }
+            .scroll-reveal {
+                opacity: 0;
+                transform: translateY(50px);
+                transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+                will-change: transform, opacity;
+            }
+            .scroll-reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .scroll-reveal-scale {
+                opacity: 0;
+                transform: scale(0.92) translateY(20px);
+                transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+                will-change: transform, opacity;
+            }
+            .scroll-reveal-scale.visible {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            .bg-gradient-animated {
+                background: radial-gradient(ellipse at 20% 50%, rgba(220, 38, 38, 0.06) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(239, 68, 68, 0.04) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 80%, rgba(248, 113, 113, 0.03) 0%, transparent 50%),
+                    #0a0a0a;
+            }
+            .glow-orb {
+                position: fixed;
+                border-radius: 50%;
+                pointer-events: none;
+                filter: blur(80px);
+                opacity: 0.15;
+                z-index: 0;
+                will-change: transform;
+            }
+            .glow-orb-1 {
+                width: 500px;
+                height: 500px;
+                top: -200px;
+                right: -100px;
+                background: #dc2626;
+                animation: orb-float 25s ease-in-out infinite alternate;
+            }
+            .glow-orb-2 {
+                width: 400px;
+                height: 400px;
+                bottom: -100px;
+                left: -100px;
+                background: #ef4444;
+                animation: orb-float 30s ease-in-out infinite alternate-reverse;
+            }
+            .glow-orb-3 {
+                width: 300px;
+                height: 300px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #f87171;
+                animation: orb-float 20s ease-in-out infinite alternate;
+                opacity: 0.06;
+            }
+            @keyframes orb-float {
+                0% {
+                    transform: translate(0, 0) scale(1);
+                }
+                33% {
+                    transform: translate(60px, -40px) scale(1.1);
+                }
+                66% {
+                    transform: translate(-30px, 50px) scale(0.9);
+                }
+                100% {
+                    transform: translate(40px, -20px) scale(1.05);
+                }
+            }
+            .feature-card {
+                background: rgba(255, 255, 255, 0.015);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                backdrop-filter: blur(10px);
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .feature-card:hover {
+                border-color: rgba(220, 38, 38, 0.2);
+                transform: translateY(-6px);
+                box-shadow: 0 20px 60px rgba(220, 38, 38, 0.06);
+            }
+            .feature-card .icon-wrap {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                background: rgba(220, 38, 38, 0.08);
+                border: 1px solid rgba(220, 38, 38, 0.12);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                transition: all 0.3s ease;
+            }
+            .feature-card:hover .icon-wrap {
+                background: rgba(220, 38, 38, 0.16);
+                border-color: rgba(220, 38, 38, 0.25);
+                transform: scale(1.05);
+            }
+            .badge-red {
+                background: rgba(220, 38, 38, 0.12);
+                color: #f87171;
+                padding: 2px 10px;
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+            .badge-green {
+                background: rgba(52, 211, 153, 0.12);
+                color: #34d399;
+                padding: 2px 10px;
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+            .badge-gold {
+                background: rgba(245, 158, 11, 0.12);
+                color: #f59e0b;
+                padding: 2px 10px;
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+            }
+            .progress-ring {
+                transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .faq-item {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .faq-item:last-child {
+                border-bottom: none;
+            }
+            .faq-question {
+                cursor: pointer;
+                padding: 20px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.3s ease;
+                user-select: none;
+            }
+            .faq-question:hover {
+                color: #ef4444;
+            }
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease, padding 0.5s ease;
+                opacity: 0;
+                padding: 0;
+            }
+            .faq-answer.open {
+                max-height: 300px;
+                opacity: 1;
+                padding: 0 0 24px 0;
+            }
+            .faq-icon {
+                transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+                flex-shrink: 0;
+                margin-left: 16px;
+            }
+            .faq-icon.open {
+                transform: rotate(180deg);
+            }
+            .instrument-tag {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 8px;
+                padding: 6px 14px;
+                font-size: 11px;
+                font-weight: 500;
+                color: rgba(255, 255, 255, 0.5);
+                transition: all 0.3s ease;
+                cursor: default;
+            }
+            .instrument-tag:hover {
+                border-color: rgba(220, 38, 38, 0.3);
+                color: #fff;
+                background: rgba(220, 38, 38, 0.06);
+            }
+            .loan-card {
+                background: rgba(255, 255, 255, 0.015);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                border-radius: 14px;
+                padding: 18px 20px;
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .loan-card:hover {
+                border-color: rgba(220, 38, 38, 0.2);
+                transform: translateY(-4px);
+                box-shadow: 0 20px 60px rgba(220, 38, 38, 0.06);
+            }
+            .loan-card .loan-icon {
+                font-size: 28px;
+                width: 40px;
+                text-align: center;
+                color: #f87171;
+                flex-shrink: 0;
+                transition: transform 0.3s ease;
+            }
+            .loan-card:hover .loan-icon {
+                transform: scale(1.15) rotate(-4deg);
+            }
+            .savings-card {
+                background: rgba(255, 255, 255, 0.015);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                border-radius: 14px;
+                padding: 20px 22px;
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+                text-align: center;
+            }
+            .savings-card:hover {
+                border-color: rgba(220, 38, 38, 0.2);
+                transform: translateY(-4px);
+                box-shadow: 0 20px 60px rgba(220, 38, 38, 0.06);
+            }
+            .savings-card .savings-icon {
+                font-size: 36px;
+                display: block;
+                margin-bottom: 8px;
+                transition: transform 0.3s ease;
+            }
+            .savings-card:hover .savings-icon {
+                transform: scale(1.1) rotate(-6deg);
+            }
+            .savings-card .interest-badge {
+                display: inline-block;
+                padding: 4px 14px;
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: 700;
+                margin-top: 6px;
+            }
+            .insurance-card {
+                background: rgba(255, 255, 255, 0.015);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                border-radius: 14px;
+                padding: 24px;
+                text-align: center;
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .insurance-card:hover {
+                border-color: rgba(220, 38, 38, 0.2);
+                transform: translateY(-4px);
+                box-shadow: 0 20px 60px rgba(220, 38, 38, 0.06);
+            }
+            .insurance-card .insurance-icon {
+                font-size: 42px;
+                display: block;
+                margin-bottom: 12px;
+                color: #f87171;
+                transition: transform 0.3s ease;
+            }
+            .insurance-card:hover .insurance-icon {
+                transform: scale(1.15) rotate(-6deg);
+            }
+            .credit-progress {
+                height: 6px;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 4px;
+                overflow: hidden;
+                position: relative;
+            }
+            .credit-progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #dc2626, #ef4444);
+                border-radius: 4px;
+                transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+                width: 0%;
+            }
+            .reminder-item {
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                border-radius: 12px;
+                padding: 16px 18px;
+                transition: all 0.3s ease;
+            }
+            .reminder-item:hover {
+                border-color: rgba(220, 38, 38, 0.15);
+                background: rgba(255, 255, 255, 0.03);
+            }
+            .reminder-item .status-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                display: inline-block;
+            }
+            .status-dot.green {
+                background: #34d399;
+            }
+            .status-dot.yellow {
+                background: #f59e0b;
+            }
+            .status-dot.red {
+                background: #ef4444;
+            }
+            .status-dot.gray {
+                background: rgba(255, 255, 255, 0.15);
+            }
+            .device-mockup {
+                perspective: 1200px;
+                transform-style: preserve-3d;
+            }
+            .device-mockup-inner {
+                transform-style: preserve-3d;
+                transition: transform 0.1s ease-out;
+            }
+            .phone-reflection {
+                transition: none;
+            }
+            .animate-slide-up {
+                animation: slide-up 0.5s ease-out forwards;
+            }
+            @keyframes slide-up {
+                0% {
+                    opacity: 0;
+                    transform: translateY(16px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .icon-animate {
+                transition: transform 0.3s ease, color 0.3s ease;
+            }
+            .icon-animate:hover {
+                transform: scale(1.2);
+                color: #ef4444;
+            }
+            .instrument-icon {
+                font-size: 32px;
+                color: #f87171;
+                transition: transform 0.3s ease, color 0.3s ease;
+                width: 40px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+            .instrument-icon:hover {
+                transform: scale(1.2) rotate(-6deg);
+                color: #ef4444;
+            }
+            #loading-screen {
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                background: #0a0a0a;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.8s ease, visibility 0.8s ease;
+            }
+            #loading-screen.hidden {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            .loader-ring {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: 3px solid rgba(255, 255, 255, 0.04);
+                border-top-color: #dc2626;
+                border-right-color: #ef4444;
+                animation: spin 1s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+                will-change: transform;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            .loader-text {
+                margin-top: 24px;
+                font-size: 14px;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                background: linear-gradient(135deg, #dc2626, #ef4444);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: pulse-text 1.5s ease-in-out infinite;
+            }
+            @keyframes pulse-text {
+                0%,
+                100% {
+                    opacity: 0.6;
+                }
+                50% {
+                    opacity: 1;
+                }
+            }
+            .modal-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 1000;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(12px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+            }
+            .modal-overlay.open {
+                opacity: 1;
+                visibility: visible;
+            }
+            .modal-content {
+                background: #0d0d1a;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 24px;
+                padding: 32px;
+                max-width: 480px;
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+                transform: scale(0.9) translateY(20px);
+                transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .modal-overlay.open .modal-content {
+                transform: scale(1) translateY(0);
+            }
+            .modal-content::-webkit-scrollbar {
+                width: 3px;
+            }
+            .modal-content::-webkit-scrollbar-thumb {
+                background: #dc2626;
+                border-radius: 10px;
+            }
+            input,
+            select,
+            textarea {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 12px;
+                padding: 12px 16px;
+                color: #fff;
+                font-size: 14px;
+                width: 100%;
+                transition: all 0.3s ease;
+                font-family: 'Inter', sans-serif;
+            }
+            input:focus,
+            select:focus,
+            textarea:focus {
+                outline: none;
+                border-color: rgba(220, 38, 38, 0.4);
+                box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+            }
+            input::placeholder,
+            textarea::placeholder {
+                color: rgba(255, 255, 255, 0.2);
+            }
+            label {
+                color: rgba(255, 255, 255, 0.5);
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.3px;
+            }
+            .form-group {
+                margin-bottom: 16px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .toast {
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: rgba(13, 13, 26, 0.95);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 16px;
+                padding: 16px 28px;
+                color: #fff;
+                font-size: 14px;
+                z-index: 9998;
+                opacity: 0;
+                transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+                box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+                pointer-events: none;
+            }
+            .toast.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            .toast .toast-icon {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .section-divider {
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, #dc2626, #ef4444);
+                border-radius: 4px;
+                margin: 0 auto 16px;
+            }
+            .tagline-highlight {
+                background: linear-gradient(135deg, #dc2626, #ef4444);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            @media (max-width: 768px) {
+                .glow-orb-1 {
+                    width: 300px;
+                    height: 300px;
+                }
+                .glow-orb-2 {
+                    width: 250px;
+                    height: 250px;
+                }
+                .modal-content {
+                    padding: 24px;
+                }
+                .device-mockup-inner {
+                    transform: scale(0.8);
+                }
+            }
+            @media (max-width: 480px) {
+                .modal-content {
+                    padding: 18px;
+                }
+                .device-mockup-inner {
+                    transform: scale(0.6);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading-screen">
+            <div class="loader-ring"></div>
+            <div class="loader-text">SIHB BANK</div>
+        </div>
+        <div id="root"></div>
+        <div id="toast" class="toast"></div>
+        <script>
+            setTimeout(function() {
+                var ls = document.getElementById('loading-screen');
+                if (ls) ls.classList.add('hidden');
+            }, 2500);
+        </script>
+        <script type="text/babel">
+            const { useState, useEffect, useRef } = React;
 
-  <section id="home" class="hero-full-fixed"><div class="hero-content"><div class="shee-logo">Shee's Kitchen</div><div class="elegant-tag">artisan patisserie · juja</div><div class="hero-description">Handcrafted celebration cakes, wedding masterpieces, and custom designs. Over 70 varieties.</div><div class="btn-group"><button class="btn-primary" id="heroOrderBtn"><i class="fas fa-shopping-cart"></i> Order Now</button><button class="btn-outline" id="exploreBtn">Explore All Cakes</button></div></div></section>
+            // ─── Icons ──────────────────────────────────────────────────────────────
+            const Icons = {
+                Menu: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+                X: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+                ArrowRight: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+                Sparkles: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3L14 8L19 8L15 12L16.5 17L12 14.5L7.5 17L9 12L5 8L10 8L12 3Z"/><path d="M19 19L20.5 22L22 19L20.5 16L19 19Z"/><path d="M2 19L3.5 22L5 19L3.5 16L2 19Z"/></svg>,
+                Shield: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
+                Zap: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+                Users: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+                BarChart: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+                Clock: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+                Globe: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+                Check: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+                ChevronDown: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
+                Star: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+                Twitter: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+                LinkedIn: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
+                Github: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.15 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.62.24 2.85.12 3.15.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>,
+                Youtube: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+                Instagram: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
+                Send: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+                Home: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>,
+                PieChart: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>,
+                Wallet: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 00-2 2v10a2 2 0 002 2h16v-5"/><path d="M16 12h2v4h-2z"/></svg>,
+                Gift: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7h3a2 2 0 000-4 2 2 0 00-3 2z"/><path d="M12 7h-3a2 2 0 010-4 2 2 0 013 2z"/></svg>,
+                Building: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="15" y2="22"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>,
+                Truck: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg>,
+                Pet: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4L14 8L18 8L15 11.5L16.5 16L12 13.5L7.5 16L9 11.5L6 8L10 8L12 4Z"/><circle cx="12" cy="19" r="2"/><circle cx="5" cy="11" r="1.5"/><circle cx="19" cy="11" r="1.5"/></svg>,
+                Scissors: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>,
+                Briefcase: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+                CreditCard: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
+                Bell: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+                Download: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+                FileText: (p) => <svg { ...p
+                    } xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+            };
 
-  <div class="container">
-    <div id="shop" class="section-title"><h2>Complete Cake Collection</h2></div>
-    <div class="category-dropdown-wrapper"><select id="categorySelect" class="category-select"><option value="all">All Cakes (70+ designs)</option><option value="celebration">Celebration Cakes</option><option value="wedding">Wedding Cakes</option><option value="event">Event & Corporate</option><option value="custom-themed">Custom & Themed</option><option value="classic">Classic Flavors</option><option value="premium">Premium & Gourmet</option><option value="diet">Special Diet</option><option value="styles">Cake Styles</option><option value="mini">Mini & Individual</option><option value="specialty">Specialty & Unique</option><option value="seasonal">Seasonal & Holiday</option></select></div>
-    <div class="products-grid" id="productsGrid"></div>
+            // ─── Data ───────────────────────────────────────────────────────────────
+            const FEATURES_DATA = [{
+                id: 'local-payments',
+                icon: 'Send',
+                title: 'Local Payments',
+                subtitle: 'To & From Investors Hub',
+                items: [
+                    'Furniture purchases via money sending system',
+                    'Raw materials & finished products payments',
+                    'Download app & pay other traders',
+                    'Money reversal for wrong addresses',
+                    'Pay for services using this platform'
+                ],
+                badge: 'E‑Commerce'
+            }, {
+                id: 'rent-property',
+                icon: 'Building',
+                title: 'Rent & Property',
+                subtitle: 'Payments & Purchase',
+                items: [
+                    'Rent payments with due date reminders',
+                    'Property purchase via our system',
+                    'Download app & pay realutors',
+                    'Lease or purchase properties',
+                    'Escrow accounts for proof of funds'
+                ],
+                badge: 'Real Estate'
+            }, {
+                id: 'internal-purchase',
+                icon: 'CreditCard',
+                title: 'Internal Purchase',
+                subtitle: 'Fuel · Supermarket · Retail',
+                items: [
+                    'Fuel purchase at petrol stations',
+                    'Supermarket & retail shop payments',
+                    'Wholesale shop transactions',
+                    'Credit limits up to 5,000,000 (Fuliza)',
+                    'Money reversal for wrong addresses'
+                ],
+                badge: 'Retail'
+            }, {
+                id: 'electronics',
+                icon: 'Zap',
+                title: 'Electronics & Electricals',
+                subtitle: 'Lipa Mdogo Mdogo',
+                items: [
+                    'Purchase gadgets on credit',
+                    'Pay in installments after deposit',
+                    'Auto‑lock on defaults',
+                    'M‑Kopa style system',
+                    'Track your device payments'
+                ],
+                badge: 'Fintech'
+            }, {
+                id: 'animals-pets',
+                icon: 'Pet',
+                title: 'Animals & Pets',
+                subtitle: 'Purchase & Services',
+                items: [
+                    'Animal & pet purchases via our system',
+                    'Pay vets & trainers using the app',
+                    'Purchase outside our e‑commerce platform',
+                    'Money reversal for wrong addresses'
+                ],
+                badge: 'Agriculture'
+            }, {
+                id: 'machinery',
+                icon: 'Truck',
+                title: 'Machinery Purchase',
+                subtitle: 'Outside the Country',
+                items: [
+                    'Pay suppliers from China, Turkey, India, SA, UK, Germany, Dubai, USA, Canada',
+                    'Raw materials from Brazil, China, Pakistan, India, Dubai, UK, USA, Canada',
+                    'Suppliers pay local distributors in Kenya',
+                    'Escrow accounts inside the system',
+                    'Request bank instruments: LC, BG, SBLC, DLC, PoF, PoP',
+                    'Apply for loans & insure imports'
+                ],
+                badge: 'International'
+            }, {
+                id: 'fashion-beauty',
+                icon: 'Scissors',
+                title: 'Fashion & Beauty',
+                subtitle: 'Clothing & Beauty Products',
+                items: [
+                    'All fashion items paid via our system',
+                    'Pay for items outside the country',
+                    'Insure your imports if desired',
+                    'Connect with global fashion vendors'
+                ],
+                badge: 'Fashion'
+            }, {
+                id: 'services-pay',
+                icon: 'Shield',
+                title: 'Services Pay',
+                subtitle: 'Trust & Escrow',
+                items: [
+                    'Secure payments for services',
+                    'Buyers & Sellers can open escrow accounts',
+                    'Trust issues? We got you covered',
+                    'Release funds upon service completion'
+                ],
+                badge: 'Escrow'
+            }, {
+                id: 'jobs-salaries',
+                icon: 'Briefcase',
+                title: 'Jobs & Salaries',
+                subtitle: 'Employer Payment System',
+                items: [
+                    'Pay staff salaries using the platform',
+                    'Reminder system for salary due dates',
+                    'Bulk payroll processing',
+                    'Salary history & reporting'
+                ],
+                badge: 'Payroll'
+            }];
 
-    <div class="custom-cake-highlight"><div class="custom-cake-header"><h3><i class="fas fa-paintbrush-fine"></i> Design Your Dream Cake</h3></div><div class="custom-studio-grid"><div class="custom-form-modern"><input type="text" id="customName" placeholder="Your name"><input type="text" id="customOccasion" placeholder="Occasion"><select id="customWeight"><option value="1">1 kg (1500 KSh)</option><option value="1.5">1.5 kg (2250 KSh)</option><option value="2">2 kg (3000 KSh)</option><option value="2.5">2.5 kg (3750 KSh)</option><option value="3">3 kg (4500 KSh)</option></select><textarea id="customNotes" rows="2" placeholder="Flavor, design ideas, color theme..."></textarea><button id="sendCustomInquiry" class="btn-custom-wa"><i class="fab fa-whatsapp"></i> Request via WhatsApp</button></div></div></div>
+            // ─── LOANS DATA ─────────────────────────────────────────────────────────
+            const LOANS_DATA = [
+                { id: 1, icon: 'fa-boxes', title: 'Import Duty', desc: 'Get up to 100% financing', badge: '100%' },
+                { id: 2, icon: 'fa-credit-card', title: 'Fuliza', desc: 'Get up to 5,000,000 credits', badge: '5M' },
+                { id: 3, icon: 'fa-industry', title: 'Machine Financing', desc: 'Get up to 100% financing', badge: '100%' },
+                { id: 4, icon: 'fa-store', title: 'Biashara Loans', desc: 'KES 10,000 – 15,000,000', badge: '15M' },
+                { id: 5, icon: 'fa-graduation-cap', title: 'School Fees Loans', desc: 'KES 5,000 – 250,000', badge: '250K' },
+                { id: 6, icon: 'fa-heartbeat', title: 'Medical Loans', desc: 'Get up to KES 5,000,000', badge: '5M' },
+                { id: 7, icon: 'fa-car', title: 'Logbook Loans', desc: 'Get up to KES 25,000,000', badge: '25M' },
+                { id: 8, icon: 'fa-home', title: 'Title Deed Loans', desc: 'Get up to KES 300,000,000', badge: '300M' },
+                { id: 9, icon: 'fa-user-tie', title: 'Civil Servant Loans', desc: 'Get up to KES 1,000,000', badge: '1M' },
+                { id: 10, icon: 'fa-file-invoice', title: 'Cheque Discounting', desc: 'Quick cash against cheques', badge: 'Fast' },
+                { id: 11, icon: 'fa-exchange-alt', title: 'Loan Off-set', desc: 'Offset existing loans easily', badge: 'Flex' },
+                { id: 12, icon: 'fa-ship', title: 'Cargo Financing', desc: 'Get up to 100% financing', badge: '100%' },
+                { id: 13, icon: 'fa-file-contract', title: 'IPF Financing', desc: 'Import Procurement Financing', badge: 'Trade' },
+                { id: 14, icon: 'fa-file-signature', title: 'LPO Financing', desc: 'Local Purchase Order financing', badge: 'LPO' },
+                { id: 15, icon: 'fa-receipt', title: 'Invoice Financing', desc: 'Get cash against unpaid invoices', badge: 'Invoice' },
+                { id: 16, icon: 'fa-mobile-alt', title: 'Mobile Loans', desc: 'Get up to KES 10,000,000', badge: '10M' },
+                { id: 17, icon: 'fa-tractor', title: 'Agriculture Loans', desc: 'Get up to KES 15,000,000', badge: '15M' },
+            ];
 
-    <div class="features"><div class="feature"><i class="fas fa-hand-sparkles"></i><h3>Handcrafted</h3><p>Each cake unique</p></div><div class="feature"><i class="fas fa-weight-hanging"></i><h3>1500/kg</h3><p>Fair pricing</p></div><div class="feature"><i class="fas fa-motorcycle"></i><h3>Delivery Juja/NBO</h3><p>Same day</p></div><div class="feature"><i class="fas fa-palette"></i><h3>Bespoke Studio</h3><p>Custom designs</p></div></div>
+            // ─── BANK INSTRUMENTS ──────────────────────────────────────────────────
+            const INSTRUMENTS_DATA = [
+                { id: 1, label: 'Standby Letter of Credit (SBLC)', icon: 'fa-file-contract' },
+                { id: 2, label: 'Bank Guarantee (BG)', icon: 'fa-handshake' },
+                { id: 3, label: 'Documentary Letter of Credit (DLC)', icon: 'fa-file-pdf' },
+                { id: 4, label: 'Proof of Funds (POF)', icon: 'fa-money-bill-wave' },
+                { id: 5, label: 'Working Capital Loans', icon: 'fa-building' },
+                { id: 6, label: 'Letter of Credit (LC)', icon: 'fa-envelope' },
+            ];
 
-    <div class="carousel-section"><div class="carousel-container" id="carouselContainer"><div class="carousel-slide active"><img src="https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Cake"></div><div class="carousel-slide"><img src="https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Cake"></div><div class="carousel-slide"><img src="https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=1000" alt="Cake"></div><div class="carousel-overlay"><h3>Artisan Creations</h3><p>70+ cake varieties for every occasion</p></div></div></div>
+            // ─── SAVINGS DATA ──────────────────────────────────────────────────────
+            const SAVINGS_DATA = [
+                { id: 1, name: 'Queens Savings', desc: 'Save daily for 3%–5% interest', rate: '3–5%', color: 'text-pink-400',
+                    bg: 'bg-pink-500/10', border: 'border-pink-500/20', icon: 'fa-crown' },
+                { id: 2, name: 'Mama Mboga', desc: 'Save daily for easy access to loans', rate: 'Flex', color: 'text-green-400',
+                    bg: 'bg-green-500/10', border: 'border-green-500/20', icon: 'fa-leaf' },
+                { id: 3, name: 'Kings Savings', desc: 'Save daily for 3%–5% interest', rate: '3–5%', color: 'text-blue-400',
+                    bg: 'bg-blue-500/10', border: 'border-blue-500/20', icon: 'fa-crown' },
+                { id: 4, name: 'Earn Ki-Bossy', desc: 'Save with us for 18% annually', rate: '18%', color: 'text-yellow-400',
+                    bg: 'bg-yellow-500/10', border: 'border-yellow-500/20', icon: 'fa-bolt' },
+                { id: 5, name: 'Save Smart', desc: 'Save with us for 10% annually', rate: '10%', color: 'text-teal-400',
+                    bg: 'bg-teal-500/10', border: 'border-teal-500/20', icon: 'fa-brain' },
+                { id: 6, name: 'Mama na Chama', desc: 'Group savings for women', rate: 'Group', color: 'text-purple-400',
+                    bg: 'bg-purple-500/10', border: 'border-purple-500/20', icon: 'fa-users' },
+                { id: 7, name: 'Savings Bumba', desc: 'Save with us for 15% annually', rate: '15%', color: 'text-orange-400',
+                    bg: 'bg-orange-500/10', border: 'border-orange-500/20', icon: 'fa-piggy-bank' },
+            ];
 
-    <div id="gallery" style="text-align:center; margin:40px 0 20px;"><h2 style="font-family:'Playfair Display'; font-size:2rem;">Sweet Gallery</h2><div style="background:rgba(255,250,240,0.8); display:inline-block; padding:4px 20px; border-radius:40px;">Our masterpiece moments</div></div>
-    <div class="gallery-grid" id="galleryGrid"></div>
-  </div>
+            // ─── INSURANCE DATA ────────────────────────────────────────────────────
+            const INSURANCE_DATA = [
+                { id: 1, icon: 'fa-car', label: 'Vehicle Insurance' },
+                { id: 2, icon: 'fa-home', label: 'Property Insurance' },
+                { id: 3, icon: 'fa-box', label: 'Importation Insurance' },
+                { id: 4, icon: 'fa-briefcase', label: 'Business Insurance' },
+            ];
 
-  <footer class="footer-elegant"><div class="container"><div class="footer-inner"><div class="footer-col"><h4>Shee's Kitchen</h4><p>Artisan bakery in Juja, Kenya.</p><p>Over 70 cake varieties</p></div><div class="footer-col"><h4>Contact</h4><p><i class="fas fa-phone"></i> 0716 180 343</p><p><i class="fas fa-envelope"></i> irungubetty96@gmail.com</p></div><div class="footer-col"><h4>Discover</h4><a href="#home">Home</a><a href="#shop">Shop</a><a id="customCakeFooterBtn" style="cursor:pointer;">Custom Cake</a></div><div class="footer-col"><h4>Newsletter</h4><div class="news-input-wrapper"><input type="email" id="newsEmail" placeholder="Your email"><button id="newsBtn">Subscribe</button></div></div></div><div class="footer-bottom" style="text-align:center; font-size:0.75rem;">© 2025 Shee's Kitchen — Every Cake Handcrafted with Love</div></div></footer>
-</div>
+            const INSTRUMENTS = ['LC', 'BG', 'SBLC', 'DLC', 'PoF', 'PoP'];
+            const REMINDERS_DATA = [
+                { id: 1, title: 'Rent Payment - Apartment 4B', due: '2026-07-01', status: 'upcoming', amount: 'KES 25,000' },
+                { id: 2, title: 'Salary - Marketing Team', due: '2026-06-30', status: 'upcoming', amount: 'KES 480,000' },
+                { id: 3, title: 'Rent Arrears - Office Space', due: '2026-06-15', status: 'overdue', amount: 'KES 12,000' },
+                { id: 4, title: 'Salary - Dev Team', due: '2026-07-05', status: 'upcoming', amount: 'KES 620,000' },
+            ];
 
-<div class="cart-sidebar" id="cartSidebar"><h3>Your Bag</h3><div class="cart-items-scroll" id="cartItemsList"></div><div class="cart-footer"><div id="cartTotal"></div><button class="btn-primary" id="checkoutBtn" style="width:100%; margin-bottom:10px;">Proceed to Order</button><button id="closeCartBtn" style="background:#f0e0d4; border:none; padding:10px; width:100%; border-radius:60px;">Close</button></div></div>
-<div class="cart-overlay" id="cartOverlay"></div>
-<div id="deleteConfirmModal" class="modal"><div class="modal-content"><h3>Remove item?</h3><p id="deleteItemName"></p><div><button id="confirmDeleteBtn" class="btn-primary" style="margin-right:10px;">Yes</button><button id="cancelDeleteBtn" style="background:#f0e0d4; border:none; padding:8px 20px; border-radius:60px;">Cancel</button></div></div></div>
-<div id="contactCheckoutModal" class="modal"><div class="modal-content"><h3>Complete order</h3><input type="tel" id="contactInfoInput" placeholder="Phone number" style="width:100%; padding:10px; margin:8px 0; border-radius:60px;"><input type="text" id="locationInput" placeholder="Delivery address" style="width:100%; padding:10px; margin:8px 0; border-radius:60px;"><textarea id="extraNotesInput" rows="2" placeholder="Special requests" style="width:100%; padding:10px; border-radius:20px;"></textarea><button id="sendOrderWhatsAppBtn" class="btn-primary" style="width:100%;">Send via WhatsApp</button><button id="closeContactModalBtn" style="margin-top:10px; background:none; border:none;">Cancel</button></div></div>
-<div id="storyModal" class="modal"><div class="modal-content"><div id="storyModalImg" class="story-modal-img"></div><h3 id="storyModalTitle"></h3><p id="storyModalDesc"></p><button id="closeStoryModalBtn" class="btn-primary">Close</button></div></div>
-<div id="customModal" class="modal"><div class="modal-content"><h3>Quick Custom</h3><input id="customNameOrig" placeholder="Name"><input id="customOccasionOrig" placeholder="Occasion"><select id="customWeightOrig"><option value="1">1 kg</option></select><textarea id="customNotesOrig" placeholder="Ideas"></textarea><button id="sendCustomInquiryOrig">Request</button><button id="closeModalBtn">Close</button></div></div>
-<div class="float-top"><button class="top-btn" id="backToTop"><i class="fas fa-arrow-up"></i></button></div>
-<div class="float-wa"><button class="whatsapp-btn" id="whatsappFloat"><i class="fab fa-whatsapp"></i></button></div>
-<div id="toastMsg" class="toast-msg">Added to cart</div>
+            // ─── Toast System ──────────────────────────────────────────────────────
+            function showToast(message, icon = '✅') {
+                const el = document.getElementById('toast');
+                if (!el) return;
+                el.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+                el.classList.add('show');
+                clearTimeout(el._hide);
+                el._hide = setTimeout(() => el.classList.remove('show'), 4000);
+            }
 
-<script>
-  const PER_KG = 1500;
-  let cart = [], currentCategory = "all";
+            // ─── Main App ──────────────────────────────────────────────────────────
+            function App() {
+                const [mobileOpen, setMobileOpen] = useState(false);
+                const [faqOpen, setFaqOpen] = useState(null);
+                const [activeFeature, setActiveFeature] = useState(null);
+                const [modalOpen, setModalOpen] = useState(null);
+                const [formState, setFormState] = useState({});
+                const [creditUsed, setCreditUsed] = useState(1875000);
+                const [creditLimit] = useState(5000000);
+                const [reminders, setReminders] = useState(REMINDERS_DATA);
+                const [salariesPaid, setSalariesPaid] = useState(false);
+                const [instruments] = useState([
+                    { id: 1, type: 'LC', ref: 'LC-2026-001', status: 'approved', amount: 'USD 45,000' },
+                    { id: 2, type: 'BG', ref: 'BG-2026-002', status: 'pending', amount: 'USD 120,000' },
+                ]);
+                const [installments, setInstallments] = useState([
+                    { id: 1, item: 'iPhone 15 Pro', deposit: 15000, monthly: 4500, paid: 2, total: 12, status: 'active' },
+                    { id: 2, item: 'MacBook Air', deposit: 25000, monthly: 8200, paid: 1, total: 8, status: 'active' },
+                ]);
+                const [stats, setStats] = useState({ users: 0, countries: 0, transfers: 0 });
+                const statsRef = useRef(null);
+                const threeContainer = useRef(null);
+                const phoneInnerRef = useRef(null);
+                const phoneContainerRef = useRef(null);
+                const reflectionRef = useRef(null);
+                const mouseX = useRef(0);
+                const mouseY = useRef(0);
+                const targetRotX = useRef(0);
+                const targetRotY = useRef(0);
+                const rafId = useRef(null);
+                const [screenIndex, setScreenIndex] = useState(0);
 
-  // 75+ cake varieties - no emojis
-  const products = [
-    { id:1, name:"Birthday Sparkle Cake", category:"celebration", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Birthday", story:"Colorful sprinkles, vanilla sponge, perfect for kids and adults." },
-    { id:2, name:"Anniversary Rose Elegance", category:"celebration", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Anniversary", story:"Gold drip with fresh roses, romantic design." },
-    { id:3, name:"Graduation Cap Cake", category:"celebration", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Graduation", story:"Chocolate ganache with edible graduation cap." },
-    { id:4, name:"Baby Shower Bliss", category:"celebration", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Baby Shower", story:"Soft pastel layers, whipped cream frosting." },
-    { id:5, name:"Gender Reveal Surprise", category:"celebration", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Gender Reveal", story:"Blue or pink interior when sliced." },
-    { id:6, name:"Welcome Baby Cake", category:"celebration", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Newborn", story:"Cute stroller and onesie design." },
-    { id:7, name:"Retirement Celebration", category:"celebration", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Retirement", story:"Elegant gold leaf, best wishes message." },
-    { id:8, name:"Congratulations Cake", category:"celebration", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Congrats", story:"Bold lettering and star decorations." },
-    { id:9, name:"Farewell Flight Cake", category:"celebration", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Farewell", story:"Airplane theme, perfect for moving away." },
-    { id:10, name:"Traditional Tiered Wedding", category:"wedding", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Wedding", story:"Classic ivory tiers with intricate piping." },
-    { id:11, name:"Modern Minimalist", category:"wedding", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Modern", story:"Clean lines, monochrome palette, geometric details." },
-    { id:12, name:"Rustic Wedding Cake", category:"wedding", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Rustic", story:"Burlap and wood accents, natural charm." },
-    { id:13, name:"Floral Wedding Masterpiece", category:"wedding", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Floral", story:"Sugar flower cascade, romantic aesthetic." },
-    { id:14, name:"Luxury Designer Cake", category:"wedding", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Luxury", story:"Gold foil accents, 3D sculpted elements." },
-    { id:15, name:"Semi-Naked Wedding", category:"wedding", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Semi-Naked", story:"Light crumb coat with berries." },
-    { id:16, name:"Cultural Wedding Cake", category:"wedding", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Cultural", story:"Traditional motifs and symbolic decorations." },
-    { id:17, name:"Corporate Branded Cake", category:"event", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Corporate", story:"Edible logo print, company colors." },
-    { id:18, name:"Product Launch Cake", category:"event", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Launch", story:"Sleek design matching brand identity." },
-    { id:19, name:"Office Celebration", category:"event", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Office", story:"Team spirit theme with fun messages." },
-    { id:20, name:"Company Anniversary", category:"event", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Milestone", story:"Years of excellence commemorative design." },
-    { id:21, name:"Award Ceremony Cake", category:"event", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Awards", story:"Golden trophy accents, elegant finish." },
-    { id:22, name:"Networking Event", category:"event", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Networking", story:"Elegant finger desserts and mini bites." },
-    { id:23, name:"Cartoon Character Cake", category:"custom-themed", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Cartoon", story:"Custom edible image of favorite character." },
-    { id:24, name:"Superhero Cake", category:"custom-themed", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Superhero", story:"Comic book style, cape and mask design." },
-    { id:25, name:"Princess Castle Cake", category:"custom-themed", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Princess", story:"Fondant castle towers and royal details." },
-    { id:26, name:"Sports Themed Cake", category:"custom-themed", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Sports", story:"Jersey and ball design for sports fans." },
-    { id:27, name:"Hobby Cake", category:"custom-themed", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Hobby", story:"Music notes, travel suitcase, or fashion theme." },
-    { id:28, name:"Movie & TV Theme", category:"custom-themed", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Movie", story:"Iconic props and film strip design." },
-    { id:29, name:"Personalized Photo Cake", category:"custom-themed", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Photo", story:"Edible photo print with custom message." },
-    { id:30, name:"Classic Chocolate Fudge", category:"classic", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Chocolate", story:"Rich fudge layers, deep cocoa flavor." },
-    { id:31, name:"Vanilla Bean Dream", category:"classic", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Vanilla", story:"Madagascar vanilla bean specks." },
-    { id:32, name:"Red Velvet Royale", category:"classic", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Red Velvet", story:"Cream cheese frosting, crimson crumb." },
-    { id:33, name:"Black Forest", category:"classic", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Black Forest", story:"Cherries and chocolate shavings." },
-    { id:34, name:"Marble Cake", category:"classic", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Marble", story:"Swirled vanilla and chocolate batter." },
-    { id:35, name:"Lemon Burst", category:"classic", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Lemon", story:"Zesty citrus flavor with lemon glaze." },
-    { id:36, name:"Carrot Walnut", category:"classic", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Carrot", story:"Cream cheese icing, walnuts and spice." },
-    { id:37, name:"Traditional Fruit Cake", category:"classic", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Fruit Cake", story:"Rich with dried fruits and nuts." },
-    { id:38, name:"Oreo Explosion", category:"premium", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Oreo", story:"Cookies and cream filling, crushed Oreo topping." },
-    { id:39, name:"Ferrero Rocher", category:"premium", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Ferrero", story:"Hazelnut praline with crunchy wafer." },
-    { id:40, name:"Nutella Heaven", category:"premium", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Nutella", story:"Hazelnut spread filling and topping." },
-    { id:41, name:"Salted Caramel", category:"premium", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Caramel", story:"Buttery caramel drizzle with sea salt." },
-    { id:42, name:"Lotus Biscoff", category:"premium", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Biscoff", story:"Caramelized biscuit spread, cookie crumble." },
-    { id:43, name:"Chocolate Ganache", category:"premium", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Ganache", story:"Silky dark chocolate ganache coating." },
-    { id:44, name:"Cheesecake Inspired", category:"premium", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Cheesecake", story:"Creamy layers with graham cracker base." },
-    { id:45, name:"Eggless Chocolate", category:"diet", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Eggless", story:"No eggs, moist and decadent." },
-    { id:46, name:"Vegan Vanilla", category:"diet", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Vegan", story:"Plant-based milk and coconut cream." },
-    { id:47, name:"Gluten Free Fudge", category:"diet", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Gluten Free", story:"Almond flour base, rich chocolate." },
-    { id:48, name:"Sugar Free Vanilla", category:"diet", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Sugar Free", story:"Stevia sweetened, diabetic friendly." },
-    { id:49, name:"Keto Chocolate", category:"diet", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Keto", story:"Low carb, high fat, almond flour." },
-    { id:50, name:"Healthy Low Calorie", category:"diet", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Low Calorie", story:"Greek yogurt frosting, reduced sugar." },
-    { id:51, name:"Buttercream Rosette", category:"styles", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Buttercream", story:"Swirled rosettes, velvety finish." },
-    { id:52, name:"Fondant Elegance", category:"styles", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Fondant", story:"Smooth flawless fondant covering." },
-    { id:53, name:"Drip Cake", category:"styles", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Drip", story:"Chocolate ganache drip effect." },
-    { id:54, name:"Naked Cake", category:"styles", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Naked", story:"Exposed layers with minimal frosting." },
-    { id:55, name:"Semi Naked Rustic", category:"styles", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Semi Naked", story:"Light crumb coat, rustic charm." },
-    { id:56, name:"Mirror Glaze", category:"styles", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Mirror Glaze", story:"High shine colorful glaze finish." },
-    { id:57, name:"Textured Art Cake", category:"styles", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Textured", story:"Palette knife strokes, artistic finish." },
-    { id:58, name:"Cupcake Dozen", category:"mini", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Cupcakes", story:"Assorted flavors, perfect for parties." },
-    { id:59, name:"Bento Lunchbox Cake", category:"mini", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Bento", story:"Personal 4 inch cake, cute packaging." },
-    { id:60, name:"Mini Celebration Cake", category:"mini", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Mini", story:"Serves 2-3, perfect for small gatherings." },
-    { id:61, name:"Cake Slices", category:"mini", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Slice", story:"Grab and go single servings." },
-    { id:62, name:"Jar Cakes", category:"mini", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Jar", story:"Layered in mason jar, gift ready." },
-    { id:63, name:"Number Cake", category:"specialty", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Number", story:"Shaped number for milestone birthdays." },
-    { id:64, name:"Letter Cake", category:"specialty", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Letter", story:"Initials cake, personalized design." },
-    { id:65, name:"Pinata Smash Cake", category:"specialty", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Pinata", story:"Hidden candy inside, smash and celebrate." },
-    { id:66, name:"Pull Apart Cupcake Cake", category:"specialty", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Pull Apart", story:"Cupcake arrangement forming a shape." },
-    { id:67, name:"Money Surprise Cake", category:"specialty", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Money", story:"Hidden bills, fun surprise inside." },
-    { id:68, name:"Ice Cream Cake", category:"specialty", image:"https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Ice Cream", story:"Layered frozen treat, cake and ice cream." },
-    { id:69, name:"Christmas Yule Log", category:"seasonal", image:"https://images.pexels.com/photos/1740345/pexels-photo-1740345.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Christmas", story:"Gingerbread spice, festive decorations." },
-    { id:70, name:"Valentine's Heart Cake", category:"seasonal", image:"https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Valentine", story:"Heart shape, raspberry rose filling." },
-    { id:71, name:"Easter Bunny Cake", category:"seasonal", image:"https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Easter", story:"Carrot and coconut, bunny design." },
-    { id:72, name:"New Year's Sparkle", category:"seasonal", image:"https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"New Year", story:"Edible glitter, clock design." },
-    { id:73, name:"Mother's Day Blossom", category:"seasonal", image:"https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Mother's Day", story:"Floral elegance, spring colors." },
-    { id:74, name:"Father's Day Cake", category:"seasonal", image:"https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Father's Day", story:"Tool or tie themed design." },
-    { id:75, name:"Eid Mubarak Cake", category:"seasonal", image:"https://images.pexels.com/photos/162990/pexels-photo-162990.jpeg?auto=compress&cs=tinysrgb&w=500", badge:"Eid", story:"Golden crescent and star decorations." }
-  ];
+                // ─── Stats ──────────────────────────────────────────────────────────
+                useEffect(() => {
+                    const targetStats = { users: 28473, countries: 94, transfers: 125000 };
+                    const duration = 2000;
+                    const start = Date.now();
+                    const animate = () => {
+                        const progress = Math.min((Date.now() - start) / duration, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        setStats({
+                            users: Math.round(eased * targetStats.users),
+                            countries: Math.round(eased * targetStats.countries),
+                            transfers: Math.round(eased * targetStats.transfers)
+                        });
+                        if (progress < 1) requestAnimationFrame(animate);
+                        else setStats(targetStats);
+                    };
+                    const observer = new IntersectionObserver((entries) => {
+                        if (entries[0].isIntersecting) { animate();
+                            observer.disconnect(); }
+                    }, { threshold: 0.3 });
+                    if (statsRef.current) observer.observe(statsRef.current);
+                    return () => observer.disconnect();
+                }, []);
 
-  function formatKES(amt){ return "KSh " + amt.toLocaleString(); }
-  function showToast(msg){ let t = document.getElementById("toastMsg"); t.textContent = msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"), 2000); }
-  function updateCartUI(){ let container = document.getElementById("cartItemsList"), totalSpan = document.getElementById("cartCount"); if(cart.length===0){ container.innerHTML = "<div style='text-align:center;padding:20px;'>Your bag is empty</div>"; document.getElementById("cartTotal").innerHTML = ""; totalSpan.innerText = "0"; return; } let total=0, html=""; cart.forEach((item,idx)=>{ html += `<div class="cart-item-row"><img class="cart-item-img" src="${item.image}"><div class="cart-item-details"><strong>${item.name}</strong><div>${item.weight} kg</div><div>${formatKES(item.totalPrice)}</div></div><i class="fas fa-trash-alt trash-icon" data-idx="${idx}"></i></div>`; total += item.totalPrice; }); container.innerHTML = html; document.getElementById("cartTotal").innerHTML = `<div class="cart-total-text">Total ${formatKES(total)}</div>`; totalSpan.innerText = cart.length; document.querySelectorAll(".trash-icon").forEach(icon=>{ icon.addEventListener("click",()=>{ pendingDeleteIdx = parseInt(icon.dataset.idx); document.getElementById("deleteItemName").innerText = `Remove "${cart[pendingDeleteIdx].name}"?`; document.getElementById("deleteConfirmModal").style.display = "flex"; }); }); }
-  let pendingDeleteIdx = null;
-  function deleteItem(){ if(pendingDeleteIdx!==null && cart[pendingDeleteIdx]){ cart.splice(pendingDeleteIdx,1); updateCartUI(); showToast("Item removed"); } pendingDeleteIdx=null; document.getElementById("deleteConfirmModal").style.display = "none"; }
-  function renderProducts(){ let filtered = currentCategory === "all" ? products : products.filter(p => p.category === currentCategory); let grid = document.getElementById("productsGrid"); if(filtered.length===0){ grid.innerHTML = "<div style='text-align:center;padding:40px;'>More creations coming soon</div>"; return; } grid.innerHTML = filtered.map(p => `<div class="product-card"><div class="product-img" style="background-image:url('${p.image}')"></div><div class="product-info"><div class="badge">${p.badge}</div><div class="product-title">${p.name}</div><div class="story-icon" data-id="${p.id}"><i class="fas fa-book-open"></i> Read story</div><div class="weight-select"><select class="kg-weight" data-id="${p.id}">${[1,1.5,2,2.5,3].map(w=>`<option value="${w}">${w} kg</option>`).join('')}</select></div><div class="price-dynamic" data-price="${p.id}">${formatKES(PER_KG)}</div><button class="add-to-cart-btn" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add to Cart</button></div></div>`).join(''); attachEvents(); }
-  function attachEvents(){ document.querySelectorAll(".story-icon").forEach(el=>{ let pid = parseInt(el.dataset.id); let prod = products.find(p=>p.id===pid); if(prod) el.addEventListener("click",()=>{ document.getElementById("storyModalTitle").innerText = prod.name; document.getElementById("storyModalDesc").innerHTML = prod.story + "<br><br>Base price: 1500 KSh per kg"; document.getElementById("storyModalImg").style.backgroundImage = `url('${prod.image}')`; document.getElementById("storyModal").style.display = "flex"; }); }); document.querySelectorAll(".kg-weight").forEach(select=>{ let pid = parseInt(select.dataset.id); let priceSpan = document.querySelector(`.price-dynamic[data-price="${pid}"]`); let update = ()=>{ priceSpan.innerText = formatKES(parseFloat(select.value)*PER_KG); }; select.addEventListener("change", update); update(); }); document.querySelectorAll(".add-to-cart-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ let id = parseInt(btn.dataset.id); let product = products.find(p=>p.id===id); let card = btn.closest(".product-card"); let weight = parseFloat(card.querySelector(".kg-weight").value); cart.push({...product, weight, totalPrice: weight*PER_KG}); updateCartUI(); showToast(`${product.name} (${weight}kg) added`); }); }); }
-  function openContactModal(){ if(cart.length===0){ showToast("Cart is empty"); return; } document.getElementById("contactCheckoutModal").style.display = "flex"; }
-  function sendOrder(){ let phone = document.getElementById("contactInfoInput").value.trim(); let loc = document.getElementById("locationInput").value.trim(); if(!phone || !loc){ showToast("Phone and address required"); return; } let items = "", total = 0; cart.forEach(i=>{ items += `- ${i.name} (${i.weight}kg) - ${formatKES(i.totalPrice)}\n`; total += i.totalPrice; }); let msg = `SHEE'S KITCHEN ORDER\nContact: ${phone}\nDelivery: ${loc}\nNotes: ${document.getElementById("extraNotesInput").value}\n\nOrder:\n${items}\nTOTAL: ${formatKES(total)}`; window.open(`https://wa.me/254716180343?text=${encodeURIComponent(msg)}`,"_blank"); cart = []; updateCartUI(); document.getElementById("contactCheckoutModal").style.display = "none"; document.getElementById("cartSidebar").classList.remove("open"); document.getElementById("cartOverlay").classList.remove("open"); showToast("Order sent! We will reply on WhatsApp."); }
-  function initCarousel(){ let slides = document.querySelectorAll('.carousel-slide'); let idx = 0; setInterval(()=>{ slides.forEach((s,i)=> s.classList.toggle('active', i===idx)); idx = (idx+1) % slides.length; }, 4000); }
-  function sendNewsletter(){ let email = document.getElementById("newsEmail").value.trim(); if(!email.includes("@")){ showToast("Valid email please"); return; } window.open(`https://wa.me/254716180343?text=Newsletter subscription: ${email}`,"_blank"); showToast("Subscription sent"); document.getElementById("newsEmail").value = ""; }
-  function closeMobileMenu(){ document.getElementById("navLinksMobile").classList.remove("open"); document.getElementById("navOverlay").classList.remove("open"); }
-  initCarousel(); renderProducts(); updateCartUI();
-  document.getElementById("categorySelect").addEventListener("change", (e)=>{ currentCategory = e.target.value; renderProducts(); });
-  document.getElementById("hamburgerBtn").onclick = ()=>{ document.getElementById("navLinksMobile").classList.toggle("open"); document.getElementById("navOverlay").classList.toggle("open"); };
-  document.getElementById("navOverlay").onclick = closeMobileMenu;
-  document.querySelectorAll("#navLinksMobile a, #customCakeNavDesktop, #customCakeNavMobile, #customCakeFooterBtn").forEach(link=>{ link.addEventListener("click", (e)=>{ if(link.id && link.id.includes("customCake")){ document.querySelector(".custom-cake-highlight").scrollIntoView({behavior:"smooth"}); closeMobileMenu(); } else if(link.getAttribute("href") === "#shop"){ document.getElementById("shop").scrollIntoView({behavior:"smooth"}); closeMobileMenu(); } else if(link.getAttribute("href") === "#gallery"){ document.getElementById("gallery").scrollIntoView({behavior:"smooth"}); closeMobileMenu(); } else if(link.getAttribute("href") === "#home"){ document.getElementById("home").scrollIntoView({behavior:"smooth"}); closeMobileMenu(); } }); });
-  document.getElementById("heroOrderBtn").onclick = ()=>{ document.getElementById("cartSidebar").classList.add("open"); document.getElementById("cartOverlay").classList.add("open"); };
-  document.getElementById("exploreBtn").onclick = ()=> document.getElementById("shop").scrollIntoView({behavior:"smooth"});
-  document.getElementById("cartIcon").onclick = ()=>{ document.getElementById("cartSidebar").classList.add("open"); document.getElementById("cartOverlay").classList.add("open"); };
-  document.getElementById("closeCartBtn").onclick = ()=>{ document.getElementById("cartSidebar").classList.remove("open"); document.getElementById("cartOverlay").classList.remove("open"); };
-  document.getElementById("cartOverlay").onclick = ()=>{ document.getElementById("cartSidebar").classList.remove("open"); document.getElementById("cartOverlay").classList.remove("open"); };
-  document.getElementById("checkoutBtn").onclick = openContactModal;
-  document.getElementById("sendOrderWhatsAppBtn").onclick = sendOrder;
-  document.getElementById("closeContactModalBtn").onclick = ()=> document.getElementById("contactCheckoutModal").style.display = "none";
-  document.getElementById("backToTop").onclick = ()=> window.scrollTo({top:0,behavior:"smooth"});
-  document.getElementById("whatsappFloat").onclick = ()=> window.open("https://wa.me/254716180343?text=Hello Shee's Kitchen","_blank");
-  document.getElementById("newsBtn").onclick = sendNewsletter;
-  document.getElementById("sendCustomInquiry").onclick = ()=>{ let name=document.getElementById("customName").value, occ=document.getElementById("customOccasion").value, weight=document.getElementById("customWeight").value, note=document.getElementById("customNotes").value; let msg=`CUSTOM CAKE REQUEST\nName: ${name || "Guest"}\nOccasion: ${occ || "Celebration"}\nWeight: ${weight}kg (${formatKES(weight*PER_KG)})\nDesign & Flavor: ${note || "Let's discuss!"}`; window.open(`https://wa.me/254716180343?text=${encodeURIComponent(msg)}`,"_blank"); showToast("Request sent! Check WhatsApp."); };
-  document.getElementById("closeModalBtn").onclick = ()=> document.getElementById("customModal").style.display = "none";
-  document.getElementById("closeStoryModalBtn").onclick = ()=> document.getElementById("storyModal").style.display = "none";
-  document.getElementById("confirmDeleteBtn").onclick = deleteItem;
-  document.getElementById("cancelDeleteBtn").onclick = ()=>{ document.getElementById("deleteConfirmModal").style.display = "none"; pendingDeleteIdx=null; };
-  const galleryImgs = ["https://images.pexels.com/photos/1854652/pexels-photo-1854652.jpeg","https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg","https://images.pexels.com/photos/1766837/pexels-photo-1766837.jpeg","https://images.pexels.com/photos/1326946/pexels-photo-1326946.jpeg","https://images.pexels.com/photos/2067429/pexels-photo-2067429.jpeg"];
-  document.getElementById("galleryGrid").innerHTML = galleryImgs.map(img => `<div class="gallery-item"><img src="${img}?auto=compress&cs=tinysrgb&w=400" alt="cake gallery"></div>`).join('');
-  document.getElementById("sendCustomInquiryOrig").onclick = ()=>{ let name=document.getElementById("customNameOrig").value, occ=document.getElementById("customOccasionOrig").value, weight=document.getElementById("customWeightOrig").value, note=document.getElementById("customNotesOrig").value; let msg=`Custom cake: ${name}, ${occ}, ${weight}kg, ${note}`; window.open(`https://wa.me/254716180343?text=${encodeURIComponent(msg)}`,"_blank"); document.getElementById("customModal").style.display = "none"; };
-</script>
-</body>
-</html>
+                // ─── Three.js ──────────────────────────────────────────────────────
+                useEffect(() => {
+                    if (!threeContainer.current) return;
+                    const container = threeContainer.current;
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    camera.position.z = 30;
+                    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    renderer.setClearColor(0x000000, 0);
+                    container.appendChild(renderer.domElement);
+                    const particlesGeo = new THREE.BufferGeometry();
+                    const count = 350;
+                    const positions = new Float32Array(count * 3);
+                    const colors = new Float32Array(count * 3);
+                    for (let i = 0; i < count; i++) {
+                        positions[i * 3] = (Math.random() - 0.5) * 80;
+                        positions[i * 3 + 1] = (Math.random() - 0.5) * 80;
+                        positions[i * 3 + 2] = (Math.random() - 0.5) * 40 - 10;
+                        const color = new THREE.Color();
+                        color.setHSL(0.0 + Math.random() * 0.03, 0.9, 0.5 + Math.random() * 0.3);
+                        colors[i * 3] = color.r;
+                        colors[i * 3 + 1] = color.g;
+                        colors[i * 3 + 2] = color.b;
+                    }
+                    particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                    particlesGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                    const particlesMat = new THREE.PointsMaterial({
+                        size: 0.12,
+                        vertexColors: true,
+                        transparent: true,
+                        opacity: 0.5,
+                        blending: THREE.AdditiveBlending,
+                        sizeAttenuation: true,
+                    });
+                    const particles = new THREE.Points(particlesGeo, particlesMat);
+                    scene.add(particles);
+                    let mouseX3 = 0,
+                        mouseY3 = 0;
+                    const handleMouse = (e) => {
+                        mouseX3 = (e.clientX / window.innerWidth - 0.5) * 2;
+                        mouseY3 = (e.clientY / window.innerHeight - 0.5) * 2;
+                    };
+                    window.addEventListener('mousemove', handleMouse);
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        particles.rotation.x += (mouseY3 * 0.02 - particles.rotation.x) * 0.02;
+                        particles.rotation.y += (mouseX3 * 0.02 - particles.rotation.y) * 0.02;
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                    const handleResize = () => {
+                        camera.aspect = window.innerWidth / window.innerHeight;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(window.innerWidth, window.innerHeight);
+                    };
+                    window.addEventListener('resize', handleResize);
+                    return () => {
+                        window.removeEventListener('mousemove', handleMouse);
+                        window.removeEventListener('resize', handleResize);
+                        container.removeChild(renderer.domElement);
+                        renderer.dispose();
+                    };
+                }, []);
+
+                // ─── GSAP ──────────────────────────────────────────────────────────
+                useEffect(() => {
+                    gsap.registerPlugin(ScrollTrigger);
+                    document.querySelectorAll('.scroll-reveal, .scroll-reveal-scale').forEach(el => {
+                        ScrollTrigger.create({
+                            trigger: el,
+                            start: 'top 88%',
+                            onEnter: () => el.classList.add('visible'),
+                            once: true,
+                        });
+                    });
+                    return () => { ScrollTrigger.getAll().forEach(t => t.kill()); };
+                }, []);
+
+                // ─── Phone interaction ────────────────────────────────────────────
+                useEffect(() => {
+                    const handleMouseMove = (e) => {
+                        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+                        const clamp = (v) => Math.max(-0.8, Math.min(0.8, v));
+                        mouseX.current = clamp(x * 1.8);
+                        mouseY.current = clamp(y * 1.8);
+                    };
+                    window.addEventListener('mousemove', handleMouseMove);
+                    const SENSITIVITY_X = -14,
+                        SENSITIVITY_Y = 16,
+                        DAMPING = 0.18,
+                        DEAD_ZONE = 0.002;
+                    const updatePhone = () => {
+                        const rawX = mouseX.current,
+                            rawY = mouseY.current;
+                        const deadX = Math.abs(rawX) < DEAD_ZONE ? 0 : rawX;
+                        const deadY = Math.abs(rawY) < DEAD_ZONE ? 0 : rawY;
+                        targetRotX.current += (deadY * SENSITIVITY_X - targetRotX.current) * DAMPING;
+                        targetRotY.current += (deadX * SENSITIVITY_Y - targetRotY.current) * DAMPING;
+                        if (phoneInnerRef.current) {
+                            phoneInnerRef.current.style.transform =
+                                `rotateX(${targetRotX.current}deg) rotateY(${targetRotY.current}deg)`;
+                        }
+                        if (reflectionRef.current) {
+                            const rx = 0.5 + targetRotY.current * 0.012,
+                                ry = 0.5 + targetRotX.current * 0.012;
+                            const cx = Math.max(0, Math.min(1, rx)),
+                                cy = Math.max(0, Math.min(1, ry));
+                            reflectionRef.current.style.background =
+                                `radial-gradient(circle at ${cx * 100}% ${cy * 100}%, rgba(255,255,255,0.08) 0%, transparent 60%)`;
+                        }
+                        rafId.current = requestAnimationFrame(updatePhone);
+                    };
+                    updatePhone();
+
+                    // Floating animation
+                    if (phoneContainerRef.current) {
+                        gsap.to(phoneContainerRef.current, {
+                            y: -14,
+                            duration: 2.8,
+                            ease: "sine.inOut",
+                            yoyo: true,
+                            repeat: -1,
+                        });
+                    }
+
+                    return () => {
+                        window.removeEventListener('mousemove', handleMouseMove);
+                        if (rafId.current) cancelAnimationFrame(rafId.current);
+                    };
+                }, []);
+
+                // ─── Auto-rotate screens ─────────────────────────────────────────
+                useEffect(() => {
+                    const interval = setInterval(() => {
+                        setScreenIndex(prev => (prev + 1) % 5);
+                    }, 5000);
+                    return () => clearInterval(interval);
+                }, []);
+
+                // ─── Handlers ─────────────────────────────────────────────────────
+                const toggleFaq = (i) => setFaqOpen(faqOpen === i ? null : i);
+                const openModal = (id) => setModalOpen(id);
+                const closeModal = () => setModalOpen(null);
+                const handleFormChange = (e) => {
+                    const { name, value } = e.target;
+                    setFormState(prev => ({ ...prev, [name]: value }));
+                };
+
+                const handleInstrumentRequest = (e) => {
+                    e.preventDefault();
+                    closeModal();
+                    showToast('Bank instrument request submitted!', '📄');
+                };
+
+                const handleSalaryReminder = () => {
+                    setSalariesPaid(true);
+                    showToast('Salary reminder sent to all employers!', '📢');
+                    setTimeout(() => setSalariesPaid(false), 3000);
+                };
+
+                const handleRentReminder = (id) => {
+                    setReminders(prev => prev.map(r => r.id === id ? { ...r, status: r.status === 'overdue' ? 'upcoming' :
+                            'overdue' } : r));
+                    showToast('Rent reminder status updated', '🔔');
+                };
+
+                const handleInstallmentPay = (id) => {
+                    setInstallments(prev => prev.map(item => {
+                        if (item.id === id && item.paid < item.total) {
+                            const newPaid = item.paid + 1;
+                            if (newPaid === item.total) {
+                                showToast(`🎉 ${item.item} fully paid!`, '🎉');
+                            }
+                            return { ...item, paid: newPaid };
+                        }
+                        return item;
+                    }));
+                };
+
+                const handleCreditUse = (amount) => {
+                    const newUsed = Math.min(creditLimit, creditUsed + amount);
+                    setCreditUsed(newUsed);
+                    showToast(`Fuliza credit used: KES ${amount.toLocaleString()}`, '💳');
+                };
+
+                const creditPercent = Math.min(100, (creditUsed / creditLimit) * 100);
+                const creditRemaining = creditLimit - creditUsed;
+
+                // ─── Device Mockup ────────────────────────────────────────────────────
+                const DeviceMockup = () => {
+                    const BarChart = ({ data }) => {
+                        const max = Math.max(...data.map(d => d.value));
+                        return (
+                            <div className="flex items-end justify-between h-16 gap-1.5">
+                                {data.map((item, idx) => (
+                                    <div key={idx} className="flex flex-col items-center gap-1 w-full">
+                                        <div className="w-full bg-gradient-to-t from-[#dc2626] to-[#ef4444] rounded-sm chart-bar" style={{ height: `${(item.value / max) * 100}%`, minHeight: '4px' }}></div>
+                                        <span className="text-[6px] text-white/30">{item.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    };
+                    const CircularProgress = ({ percentage, label, color }) => {
+                        const radius = 14;
+                        const circumference = 2 * Math.PI * radius;
+                        const offset = circumference - (percentage / 100) * circumference;
+                        return (
+                            <div className="flex flex-col items-center gap-1">
+                                <svg viewBox="0 0 36 36" className="w-12 h-12 transform -rotate-90">
+                                    <circle cx="18" cy="18" r={radius} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
+                                    <circle cx="18" cy="18" r={radius} fill="none" stroke={color} strokeWidth="3" strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" className="progress-ring" />
+                                </svg>
+                                <span className="text-[10px] text-white font-semibold">{label}</span>
+                                <span className="text-[8px] text-white/40">{percentage}%</span>
+                            </div>
+                        );
+                    };
+                    const screens = [
+                        // Screen 1: Dashboard
+                        <div key="1" className="flex flex-col h-full space-y-3">
+                            <div className="flex items-center justify-between"><div><div className="text-white/40 text-[10px]">Total Balance</div><div className="text-white text-xl font-bold tracking-tight">KES 12,450.00</div></div><div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#dc2626] to-[#ef4444] flex items-center justify-center text-white font-bold text-xs shadow-lg shadow-red-500/30">+</div></div>
+                            <div className="flex items-center gap-4">
+                                <div className="relative w-20 h-20"><div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#dc2626] via-[#ef4444] to-[#f87171] blur-sm"></div><div className="relative w-full h-full rounded-full bg-[#0d0d1a] border border-white/10 flex items-center justify-center text-xs text-white/60 font-medium">40%</div></div>
+                                <div className="flex-1 space-y-1"><div className="flex justify-between text-[10px]"><span className="text-white/60">Spent</span><span className="text-white font-medium">KES 7,450</span></div><div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden"><div className="h-full w-[60%] bg-gradient-to-r from-[#dc2626] to-[#ef4444] rounded-full"></div></div><div className="flex justify-between text-[10px]"><span className="text-white/60">Income</span><span className="text-white font-medium">KES 4,200</span></div><div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden"><div className="h-full w-[40%] bg-gradient-to-r from-[#f87171] to-[#fca5a5] rounded-full"></div></div></div>
+                            </div>
+                            <div className="flex-1 space-y-1.5">
+                                {[{ name: 'Furniture Store', amount: '-KES 12,999', icon: '🪑' }, { name: 'Petrol Station',
+                                        amount: '-KES 4,500', icon: '⛽' }, { name: 'Salary Deposit', amount: '+KES 3,200.00',
+                                        icon: '💼' }].map((tx, i) => (
+                                    <div key={i} className="flex items-center justify-between bg-white/5 p-2 rounded-xl border border-white/5 animate-slide-up" style={{ animationDelay: `${i * 0.1}s`, animationFillMode: 'forwards' }}>
+                                        <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">{tx.icon}</div><span className="text-white/80 text-xs">{tx.name}</span></div>
+                                        <span className={`text-xs font-medium ${tx.amount.startsWith('+') ? 'text-[#34d399]' : 'text-white/60'}`}>{tx.amount}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>,
+                        // Screen 2: Analytics
+                        <div key="2" className="flex flex-col h-full space-y-3">
+                            <div className="flex items-center justify-between"><span className="text-white font-semibold text-sm">Spending Analytics</span><span className="text-[10px] text-white/40">This Month</span></div>
+                            <BarChart data={[{ label: 'Rent', value: 85 }, { label: 'Fuel', value: 60 }, { label: 'Shopping',
+                                    value: 40 }, { label: 'Food', value: 30 }, { label: 'Utilities', value: 20 }]} />
+                            <div className="grid grid-cols-2 gap-1.5 mt-1 flex-1">
+                                {[{ cat: 'Rent', val: 'KES 25,000', color: 'bg-red-500' }, { cat: 'Fuel',
+                                        val: 'KES 8,200', color: 'bg-red-400' }, { cat: 'Shopping', val: 'KES 6,100',
+                                        color: 'bg-red-300' }, { cat: 'Food', val: 'KES 3,400',
+                                        color: 'bg-red-200' }].map((item, i) => (
+                                    <div key={i} className="flex items-center justify-between bg-white/5 p-2 rounded-lg border border-white/5"><div className="flex items-center gap-1.5"><div className={`w-2 h-2 rounded-full ${item.color}`}></div><span className="text-white/60 text-[10px]">{item.cat}</span></div><span className="text-white text-[10px] font-medium">{item.val}</span></div>
+                                ))}
+                            </div>
+                        </div>,
+                        // Screen 3: Rent & Property
+                        <div key="3" className="flex flex-col h-full space-y-3">
+                            <div className="flex items-center justify-between"><span className="text-white font-semibold text-sm">Rent & Property</span><span className="text-[10px] text-white/40">Due Soon</span></div>
+                            <div className="bg-white/5 p-3 rounded-xl border border-white/5"><div className="flex justify-between text-xs"><span className="text-white/60">Apartment 4B</span><span className="text-white font-medium">KES 25,000</span></div><div className="flex justify-between text-[10px] text-white/30"><span>Due: 2026-07-01</span><span className="text-yellow-400">⏰ Remind</span></div></div>
+                            <div className="bg-white/5 p-3 rounded-xl border border-white/5"><div className="flex justify-between text-xs"><span className="text-white/60">Office Space</span><span className="text-white font-medium">KES 12,000</span></div><div className="flex justify-between text-[10px] text-white/30"><span>Due: 2026-06-15</span><span className="text-red-400">⚠️ Overdue</span></div></div>
+                            <button className="w-full py-3 bg-gradient-to-r from-[#dc2626] to-[#ef4444] rounded-full text-white font-semibold text-sm">Pay Rent</button>
+                            <div className="flex-1"></div>
+                        </div>,
+                        // Screen 4: Installments (Lipa Mdogo Mdogo)
+                        <div key="4" className="flex flex-col h-full space-y-3">
+                            <div className="flex items-center justify-between"><span className="text-white font-semibold text-sm">Lipa Mdogo Mdogo</span><span className="text-[10px] text-white/40">2 active</span></div>
+                            <div className="flex justify-around">
+                                <CircularProgress percentage={75} label="iPhone 15" color="#dc2626" />
+                                <CircularProgress percentage={45} label="MacBook" color="#ef4444" />
+                            </div>
+                            <div className="bg-white/5 p-3 rounded-xl border border-white/5 space-y-1.5"><div className="flex justify-between text-xs"><span className="text-white/60">iPhone 15 Pro</span><span className="text-white font-medium">KES 4,500 / mo</span></div><div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden"><div className="h-full w-[75%] bg-gradient-to-r from-[#dc2626] to-[#ef4444] rounded-full"></div></div><div className="flex justify-between text-[10px] text-white/20"><span>2 of 12 paid</span><span>🔒 Auto‑lock on default</span></div></div>
+                            <div className="text-center text-[10px] text-white/40">✨ Pay on time to avoid lock ✨</div>
+                            <div className="flex-1"></div>
+                        </div>,
+                        // Screen 5: International Payments
+                        <div key="5" className="flex flex-col h-full space-y-3">
+                            <div className="flex items-center justify-between"><span className="text-white font-semibold text-sm">Global Transfers</span><span className="text-[10px] text-[#34d399] font-medium">🌍 40+ countries</span></div>
+                            <div className="grid grid-cols-2 gap-1.5 flex-1">
+                                {[{ country: 'China', flag: '🇨🇳', amount: 'USD 45,000' }, { country: 'Turkey', flag: '🇹🇷',
+                                        amount: 'USD 12,000' }, { country: 'Germany', flag: '🇩🇪', amount: 'USD 28,000' },
+                                    { country: 'Dubai', flag: '🇦🇪', amount: 'USD 9,000' }].map((item, i) => (
+                                    <div key={i} className="bg-white/5 p-2 rounded-xl border border-white/5"><div className="text-white font-bold text-xs">{item.flag} {item.country}</div><div className="text-white/60 text-[8px]">{item.amount}</div></div>
+                                ))}
+                            </div>
+                            <div className="bg-white/5 p-2 rounded-xl border border-white/5 flex items-center justify-between"><span className="text-white/60 text-xs">Instruments</span><div className="flex gap-1"><span className="text-[8px] text-white/40 bg-white/10 px-1.5 py-0.5 rounded">LC</span><span className="text-[8px] text-white/40 bg-white/10 px-1.5 py-0.5 rounded">BG</span><span className="text-[8px] text-white/40 bg-white/10 px-1.5 py-0.5 rounded">SBLC</span></div></div>
+                        </div>
+                    ];
+                    return (
+                        <div ref={phoneContainerRef} className="device-mockup flex items-center justify-center will-change-transform">
+                            <div className="device-mockup flex items-center justify-center">
+                                <div ref={phoneInnerRef} className="device-mockup-inner relative w-[200px] sm:w-[240px] md:w-[280px] aspect-[9/19] rounded-[36px] bg-gradient-to-b from-[#0d0d1a] to-[#0a0a0a] p-1.5 border border-white/5 shadow-[0_40px_120px_rgba(220,38,38,0.12)] will-change-transform">
+                                    <div className="absolute -inset-1 rounded-[40px] bg-gradient-to-b from-[#dc2626]/20 via-transparent to-[#ef4444]/10 blur-xl -z-10"></div>
+                                    <div className="relative w-full h-full rounded-[30px] bg-gradient-to-b from-[#0a0a18] to-[#05050d] overflow-hidden p-4 flex flex-col">
+                                        <div className="flex justify-between items-center mb-3 px-1"><span className="text-[10px] text-white/30 font-medium">9:41</span><div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-[#dc2626]/40 border border-[#dc2626]/10"></div><div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/40 border border-[#ef4444]/10"></div></div></div>
+                                        <div className="flex-1 overflow-hidden relative">
+                                            <div className="flex transition-transform duration-500 ease-in-out h-full" style={{ transform: `translateX(-${screenIndex * 100}%)` }}>
+                                                {screens.map((screen, idx) => (<div key={idx} className="min-w-full h-full px-0.5 overflow-y-auto scrollbar-hide">{screen}</div>))}
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-center gap-1.5 py-1">{ [0, 1, 2, 3, 4].map((i) => (<div key={i} className={`h-1 rounded-full transition-all duration-300 ${screenIndex === i ? 'w-4 bg-[#dc2626]' : 'w-1 bg-white/20'}`}></div>)) }</div>
+                                        <div className="flex justify-around pt-1 pb-0.5"><Icons.Home className="w-4 h-4 text-[#dc2626]"/><Icons.PieChart className="w-4 h-4 text-white/30"/><Icons.Send className="w-4 h-4 text-white/30"/><Icons.Wallet className="w-4 h-4 text-white/30"/><Icons.Gift className="w-4 h-4 text-white/30"/></div>
+                                        <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-black/60 rounded-full"></div>
+                                    </div>
+                                    <div ref={reflectionRef} className="absolute inset-0 rounded-[36px] pointer-events-none overflow-hidden phone-reflection" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 60%)' }}></div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                };
+
+                // Helper to render FontAwesome icon with hover class
+                const FaIcon = ({ icon, className = '' }) => (
+                    <i className={`fas ${icon} icon-animate ${className}`}></i>
+                );
+
+                return (
+                    <div className="min-h-screen bg-gradient-animated relative overflow-hidden">
+                        {/* Background orbs */}
+                        <div ref={threeContainer} className="fixed inset-0 z-0 pointer-events-none"></div>
+                        <div className="glow-orb glow-orb-1"></div>
+                        <div className="glow-orb glow-orb-2"></div>
+                        <div className="glow-orb glow-orb-3"></div>
+
+                        {/* ─── Navigation ────────────────────────────────────────── */}
+                        <nav className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 glass border-b border-white/5">
+                            <div className="max-w-7xl mx-auto flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#dc2626] to-[#ef4444] flex items-center justify-center text-white font-bold text-sm shadow-[0_0_40px_rgba(220,38,38,0.2)]">
+                                        S
+                                    </div>
+                                    <span className="text-white font-bold text-lg tracking-tight">SIHB BANK</span>
+                                    <span className="text-[10px] font-medium text-white/20 bg-white/5 px-2 py-0.5 rounded-full">
+                                        Smart Investors
+                                    </span>
+                                </div>
+                                <div className="hidden md:flex items-center gap-8 text-sm text-white/40">
+                                    <a href="#features" className="hover:text-white transition-colors">Features</a>
+                                    <a href="#loans" className="hover:text-white transition-colors">Loans</a>
+                                    <a href="#instruments" className="hover:text-white transition-colors">Instruments</a>
+                                    <a href="#savings" className="hover:text-white transition-colors">Savings</a>
+                                    <a href="#insurance" className="hover:text-white transition-colors">Insurance</a>
+                                    <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <button className="btn-google-play">
+                                        <svg viewBox="0 0 512 512" fill="currentColor">
+                                            <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                        </svg>
+                                        <span>Download App</span>
+                                    </button>
+                                    <button className="md:hidden text-white/40 hover:text-white" onClick={() =>
+                                        setMobileOpen(!mobileOpen)}>
+                                        {mobileOpen ? <Icons.X /> : <Icons.Menu />}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className={`md:hidden fixed inset-x-0 top-[58px] glass border-b border-white/5 transition-all duration-300 overflow-hidden ${mobileOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className="flex flex-col p-6 space-y-4 text-white/40 text-sm">
+                                    <a href="#features" className="hover:text-white transition-colors py-2">Features</a>
+                                    <a href="#loans" className="hover:text-white transition-colors py-2">Loans</a>
+                                    <a href="#instruments" className="hover:text-white transition-colors py-2">Instruments</a>
+                                    <a href="#savings" className="hover:text-white transition-colors py-2">Savings</a>
+                                    <a href="#insurance" className="hover:text-white transition-colors py-2">Insurance</a>
+                                    <a href="#faq" className="hover:text-white transition-colors py-2">FAQ</a>
+                                    <div className="pt-4 border-t border-white/5 flex flex-col gap-3">
+                                        <button className="btn-google-play w-full justify-center">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="w-6 h-6">
+                                                <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                            </svg>
+                                            <span>Download App</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+
+                        {/* ─── Hero ──────────────────────────────────────────────── */}
+                        <section className="relative z-10 pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                                    <div className="space-y-8 text-center lg:text-left">
+                                        <div className="scroll-reveal inline-block mx-auto lg:mx-0">
+                                            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-light text-xs font-medium text-[#f87171] border border-white/5">
+                                                <span className="relative flex h-2 w-2">
+                                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-60"></span>
+                                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#dc2626]"></span>
+                                                </span>
+                                                Smart Investors Sender Bank
+                                            </span>
+                                        </div>
+                                        <h1 className="scroll-reveal text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+                                            <span className="text-white">SIHB BANK</span><br />
+                                            <span className="text-gradient-glow">Send, Save, Borrow, &amp; Insure – All in One Platform.</span>
+                                        </h1>
+                                        <p className="scroll-reveal text-base sm:text-lg md:text-xl text-white/40 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                                            The ultimate money transaction system for investors, businesses, and individuals.
+                                            Secure, fast, and built for the modern economy.
+                                        </p>
+                                        <div className="scroll-reveal flex flex-wrap gap-4 justify-center lg:justify-start">
+                                            <button className="btn-google-play">
+                                                <svg viewBox="0 0 512 512" fill="currentColor" className="w-6 h-6">
+                                                    <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                                </svg>
+                                                <span>Download App</span>
+                                            </button>
+                                        </div>
+                                        <div className="scroll-reveal flex items-center gap-4 justify-center lg:justify-start text-white/30 text-xs">
+                                            <div className="flex -space-x-2">
+                                                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#dc2626] to-[#ef4444] flex items-center justify-center text-[8px] font-bold text-white border-2 border-[#0a0a0a]">
+                                                    SC
+                                                </div>
+                                                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#f87171] to-[#fca5a5] flex items-center justify-center text-[8px] font-bold text-white border-2 border-[#0a0a0a]">
+                                                    MR
+                                                </div>
+                                                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#ef4444] to-[#f87171] flex items-center justify-center text-[8px] font-bold text-white border-2 border-[#0a0a0a]">
+                                                    EV
+                                                </div>
+                                            </div>
+                                            <span>
+                                                <span className="text-white font-semibold">28K+</span> users ·
+                                                <span className="text-[#f87171]"> 94</span> countries
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="scroll-reveal-scale flex justify-center lg:justify-end">
+                                        <DeviceMockup />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── Stats ─────────────────────────────────────────────── */}
+                        <section ref={statsRef} className="relative z-10 py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-y border-white/5">
+                            <div className="max-w-6xl mx-auto">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                                    <div className="scroll-reveal-scale text-center p-6 rounded-2xl glass border border-white/5">
+                                        <div className="stat-number text-gradient text-3xl font-bold">{stats.users.toLocaleString()}
+                                        </div>
+                                        <div className="text-white/40 text-sm mt-1">Active Users</div>
+                                    </div>
+                                    <div className="scroll-reveal-scale text-center p-6 rounded-2xl glass border border-white/5" style={{ transitionDelay: '100ms' }}>
+                                        <div className="stat-number text-gradient text-3xl font-bold">{stats.countries}</div>
+                                        <div className="text-white/40 text-sm mt-1">Countries</div>
+                                    </div>
+                                    <div className="scroll-reveal-scale text-center p-6 rounded-2xl glass border border-white/5" style={{ transitionDelay: '200ms' }}>
+                                        <div className="stat-number text-gradient text-3xl font-bold">${(stats.transfers / 1000)
+                                                .toFixed(1)}K</div>
+                                        <div className="text-white/40 text-sm mt-1">Total Transfers</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── Features ──────────────────────────────────────────── */}
+                        <section id="features" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        Our Features
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl md:text-5xl font-bold">
+                                        <span className="text-white">Everything You Need</span><br />
+                                        <span className="text-gradient">In One Platform</span>
+                                    </h2>
+                                    <p className="scroll-reveal text-white/40 text-base sm:text-lg mt-4">
+                                        From local payments to international trade, SIHB BANK covers it all.
+                                    </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                                    {FEATURES_DATA.map((f, i) => {
+                                        const Icon = Icons[f.icon] || Icons.Send;
+                                        return (
+                                            <div key={f.id} className={`scroll-reveal-scale feature-card rounded-2xl p-5 md:p-6`} style={{ transitionDelay: `${i * 60}ms` }}>
+                                                <div className="flex items-start gap-4">
+                                                    <div className="icon-wrap flex-shrink-0">
+                                                        <Icon className="w-6 h-6 text-[#f87171]" />
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                            <h3 className="text-white font-semibold text-base">{f.title}</h3>
+                                                            <span className="badge-red">{f.badge}</span>
+                                                        </div>
+                                                        <p className="text-white/30 text-xs mt-0.5">{f.subtitle}</p>
+                                                        <ul className="mt-3 space-y-1.5 text-xs text-white/40">
+                                                            {f.items.slice(0, 4).map((item, idx) => (
+                                                                <li key={idx} className="flex items-start gap-1.5">
+                                                                    <span className="text-[#f87171] mt-0.5">•</span>
+                                                                    <span className="leading-relaxed">{item}</span>
+                                                                </li>
+                                                            ))}
+                                                            {f.items.length > 4 && (
+                                                                <li className="text-[#f87171]/60 text-[10px]">
+                                                                    +{f.items.length - 4} more
+                                                                </li>
+                                                            )}
+                                                        </ul>
+                                                        <button
+                                                            onClick={() => { setActiveFeature(f.id);
+                                                                openModal('feature-detail'); }}
+                                                            className="mt-3 text-[#f87171] text-xs font-medium hover:text-white transition-colors flex items-center gap-1"
+                                                        >
+                                                            View Details <Icons.ArrowRight className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── SECTION 1: LOANS / MONEY LENDING ──────────────────── */}
+                        <section id="loans" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        Loans & Money Lending
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl md:text-5xl font-bold">
+                                        <span className="text-white">Get Funded</span>
+                                        <span className="text-gradient"> When You Need It</span>
+                                    </h2>
+                                    <div className="section-divider"></div>
+                                    <p className="scroll-reveal text-white/40 text-base sm:text-lg mt-4">
+                                        Flexible financing solutions for every need — from import duty to agriculture.
+                                    </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                                    {LOANS_DATA.map((loan) => (
+                                        <div key={loan.id} className="scroll-reveal-scale loan-card">
+                                            <i className={`fas ${loan.icon} loan-icon`}></i>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <span className="text-white font-medium text-sm">{loan.title}</span>
+                                                    <span className="badge-red">{loan.badge}</span>
+                                                </div>
+                                                <p className="text-white/40 text-xs mt-0.5">{loan.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {/* NB Note */}
+                                <div className="scroll-reveal-scale mt-8 glass rounded-2xl p-5 md:p-6 border border-white/5">
+                                    <div className="flex items-start gap-3">
+                                        <i className="fas fa-pen-alt text-[#f87171] text-xl icon-animate mt-0.5"></i>
+                                        <div>
+                                            <p className="text-white/60 text-sm font-medium">NB:</p>
+                                            <p className="text-white/30 text-sm mt-1">
+                                                Clients can apply for any of the following instruments — available within the app.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── SECTION 2: BANK INSTRUMENTS ───────────────────────── */}
+                        <section id="instruments" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        Trade Finance
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl md:text-5xl font-bold">
+                                        <span className="text-white">Bank Instruments</span>
+                                        <span className="text-gradient"> & Trade Tools</span>
+                                    </h2>
+                                    <div className="section-divider"></div>
+                                    <p className="scroll-reveal text-white/40 text-base sm:text-lg mt-4">
+                                        Powerful financial instruments to facilitate local and international trade.
+                                    </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                                    {INSTRUMENTS_DATA.map((inst) => (
+                                        <div key={inst.id} className="scroll-reveal-scale glass rounded-2xl p-5 border border-white/5 hover:border-red-500/20 transition-all duration-300 flex items-center gap-4">
+                                            <i className={`fas ${inst.icon} instrument-icon`}></i>
+                                            <span className="text-white/80 text-sm font-medium">{inst.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                {/* Questions Boxes removed per user request */}
+                            </div>
+                        </section>
+
+                        {/* ─── SECTION 3: SAVINGS SACCO PLATFORM ──────────────────── */}
+                        <section id="savings" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        Grow Your Wealth
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl md:text-5xl font-bold">
+                                        <span className="text-white">Savings SACCO</span>
+                                        <span className="text-gradient"> Platform</span>
+                                    </h2>
+                                    <div className="section-divider"></div>
+                                    <p className="scroll-reveal text-white/40 text-base sm:text-lg mt-4">
+                                        Save smart, earn more — with flexible plans and competitive interest rates.
+                                    </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                                    {SAVINGS_DATA.map((plan) => (
+                                        <div key={plan.id} className={`scroll-reveal-scale savings-card ${plan.bg} ${plan.border}`}>
+                                            <i className={`fas ${plan.icon} savings-icon ${plan.color}`}></i>
+                                            <h3 className={`text-white font-semibold text-base ${plan.color}`}>{plan.name}</h3>
+                                            <p className="text-white/40 text-xs mt-1">{plan.desc}</p>
+                                            <span className={`interest-badge ${plan.color} ${plan.bg} border ${plan.border}`}>
+                                                {plan.rate}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── SECTION 4: INSURANCE ───────────────────────────────── */}
+                        <section id="insurance" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        Protect What Matters
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl md:text-5xl font-bold">
+                                        <span className="text-white">Insurance</span>
+                                        <span className="text-gradient"> Coverage</span>
+                                    </h2>
+                                    <div className="section-divider"></div>
+                                    <p className="scroll-reveal text-white/40 text-base sm:text-lg mt-4">
+                                        Comprehensive insurance solutions for your vehicles, property, business, and imports.
+                                    </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+                                    {INSURANCE_DATA.map((item) => (
+                                        <div key={item.id} className="scroll-reveal-scale insurance-card">
+                                            <i className={`fas ${item.icon} insurance-icon`}></i>
+                                            <h3 className="text-white font-semibold text-base">{item.label}</h3>
+                                            <p className="text-white/30 text-xs mt-2">Get covered today</p>
+                                            <button className="mt-4 text-[#f87171] text-xs hover:text-white transition-colors border border-red-500/20 px-4 py-1.5 rounded-full hover:bg-red-500/10">
+                                                Learn More
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── FAQ ────────────────────────────────────────────────── */}
+                        <section id="faq" className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5">
+                            <div className="max-w-3xl mx-auto">
+                                <div className="text-center mb-12">
+                                    <span className="scroll-reveal inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-3">
+                                        FAQ
+                                    </span>
+                                    <h2 className="scroll-reveal text-3xl sm:text-4xl font-bold">
+                                        <span className="text-white">Got</span>
+                                        <span className="text-gradient"> Questions?</span>
+                                    </h2>
+                                </div>
+                                <div className="glass rounded-2xl border border-white/5 overflow-hidden">
+                                    {[
+                                        { q: 'What is SIHB BANK?', a: 'SIHB BANK (Smart Investors Sender Bank) is a comprehensive money sending and transaction platform for investors, businesses, and individuals. We offer local and international payments, escrow services, bank instruments, loans, and more.' },
+                                        { q: 'How do I open an escrow account?', a: 'You can open an escrow account directly from our platform. Click on "Open Escrow Account" in the services section, fill in the details, and your account will be created instantly.' },
+                                        { q: 'What are the credit limits for Fuliza?', a: 'We offer credit limits of up to KES 5,000,000 (Fuliza) for eligible clients. The limit is determined based on your transaction history and account standing.' },
+                                        { q: 'Can I reverse a payment sent to the wrong address?', a: 'Yes! If you send money to the wrong address, we can reverse the transaction. Contact our support team immediately with the transaction details.' },
+                                        { q: 'How do I request a bank instrument?', a: 'Navigate to the Bank Instruments section and click "Request Instrument". Choose your instrument type (LC, BG, SBLC, DLC, PoF, PoP) and fill in the required details.' },
+                                        { q: 'What happens if I default on an installment?', a: 'If you default on a Lipa Mdogo Mdogo installment, the device or item will be automatically locked. You can contact support to arrange a payment plan to unlock it.' },
+                                    ].map((f, i) => (
+                                        <div key={i} className="faq-item px-4 md:px-6">
+                                            <div className="faq-question" onClick={() => toggleFaq(i)}>
+                                                <span className="text-white font-medium text-sm md:text-base">{f.q}</span>
+                                                <Icons.ChevronDown className={`faq-icon ${faqOpen === i ? 'open' : ''} text-white/30 w-5 h-5`} />
+                                            </div>
+                                            <div className={`faq-answer ${faqOpen === i ? 'open' : ''}`}>
+                                                <p className="text-white/40 text-sm leading-relaxed">{f.a}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── CTA ────────────────────────────────────────────────── */}
+                        <section className="relative z-10 py-20 md:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/10 via-[#ef4444]/5 to-[#f87171]/5"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#dc2626]/10 blur-3xl"></div>
+                            <div className="max-w-4xl mx-auto text-center relative z-10">
+                                <div className="scroll-reveal-scale glass rounded-3xl border border-white/5 p-8 md:p-16">
+                                    <span className="inline-block text-[#f87171] text-sm font-semibold tracking-wider uppercase mb-4">
+                                        Join the Future of Banking
+                                    </span>
+                                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                                        <span className="text-white">Ready to</span>
+                                        <span className="text-gradient"> Send Smarter?</span>
+                                    </h2>
+                                    <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto mb-8">
+                                        Join thousands of investors and businesses using SIHB BANK for all their transaction
+                                        needs.
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                        <button className="btn-google-play px-6 py-4">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="w-6 h-6">
+                                                <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/>
+                                            </svg>
+                                            <span>Download App</span>
+                                        </button>
+                                    </div>
+                                    <p className="text-white/20 text-sm mt-6">🔒 100% secure · Regulated · Trusted by 28K+ users</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ─── Footer ────────────────────────────────────────────── */}
+                        <footer className="relative z-10 py-12 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+                            <div className="max-w-7xl mx-auto">
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                    <div className="lg:col-span-1">
+                                        <div className="flex items-center gap-2.5 mb-4">
+                                            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#dc2626] to-[#ef4444] flex items-center justify-center text-white font-bold text-sm">
+                                                S
+                                            </div>
+                                            <span className="text-white font-bold text-lg tracking-tight">SIHB BANK</span>
+                                        </div>
+                                        <p className="text-white/30 text-sm max-w-xs leading-relaxed">
+                                            Smart Investors Sender Bank — The ultimate money transaction platform.
+                                        </p>
+                                        <div className="flex gap-3 mt-4">
+                                            <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-white/30 hover:text-white">
+                                                <Icons.Twitter className="w-4 h-4" />
+                                            </a>
+                                            <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-white/30 hover:text-white">
+                                                <Icons.LinkedIn className="w-4 h-4" />
+                                            </a>
+                                            <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-white/30 hover:text-white">
+                                                <Icons.Youtube className="w-4 h-4" />
+                                            </a>
+                                            <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-white/30 hover:text-white">
+                                                <Icons.Instagram className="w-4 h-4" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-4">Products</h4>
+                                        <ul className="space-y-2.5 text-sm text-white/30">
+                                            <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                                            <li><a href="#loans" className="hover:text-white transition-colors">Loans</a></li>
+                                            <li><a href="#instruments" className="hover:text-white transition-colors">Instruments</a></li>
+                                            <li><a href="#savings" className="hover:text-white transition-colors">Savings</a></li>
+                                            <li><a href="#insurance" className="hover:text-white transition-colors">Insurance</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-4">Company</h4>
+                                        <ul className="space-y-2.5 text-sm text-white/30">
+                                            <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-white font-semibold text-sm mb-4">Legal</h4>
+                                        <ul className="space-y-2.5 text-sm text-white/30">
+                                            <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Cookies</a></li>
+                                            <li><a href="#" className="hover:text-white transition-colors">Compliance</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="mt-12 pt-8 border-t border-white/5 text-center text-white/20 text-xs">
+                                    &copy; {new Date().getFullYear()} SIHB BANK — Smart Investors Sender Bank. All rights reserved.
+                                    Built with ❤️
+                                </div>
+                            </div>
+                        </footer>
+
+                        {/* ─── Modals ────────────────────────────────────────────── */}
+                        {/* Feature Detail Modal */}
+                        <div className={`modal-overlay ${modalOpen === 'feature-detail' ? 'open' : ''}`} onClick={closeModal}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-white font-bold text-lg">
+                                        {activeFeature ? FEATURES_DATA.find(f => f.id === activeFeature)?.title || 'Feature' :
+                                        'Feature Details'}
+                                    </h3>
+                                    <button onClick={closeModal} className="text-white/30 hover:text-white">
+                                        <Icons.X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                                {activeFeature && (() => {
+                                    const f = FEATURES_DATA.find(f => f.id === activeFeature);
+                                    if (!f) return <p className="text-white/30">Feature not found.</p>;
+                                    return (
+                                        <div>
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <span className="badge-red">{f.badge}</span>
+                                                <span className="text-white/20 text-xs">{f.subtitle}</span>
+                                            </div>
+                                            <p className="text-white/40 text-sm mb-4">Complete list of capabilities:</p>
+                                            <ul className="space-y-2 text-sm">
+                                                {f.items.map((item, idx) => (
+                                                    <li key={idx} className="flex items-start gap-2 text-white/60">
+                                                        <Icons.Check className="w-4 h-4 text-[#f87171] flex-shrink-0 mt-0.5" />
+                                                        <span>{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <div className="mt-4 p-3 rounded-xl bg-white/5 border border-white/5">
+                                                <p className="text-white/30 text-xs flex items-center gap-2">
+                                                    <Icons.Shield className="w-4 h-4 text-[#f87171]" />
+                                                    All transactions are secure and reversible when needed.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+
+                        {/* Escrow Modal */}
+                        <div className={`modal-overlay ${modalOpen === 'escrow' ? 'open' : ''}`} onClick={closeModal}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-white font-bold text-lg">🏦 Open Escrow Account</h3>
+                                    <button onClick={closeModal} className="text-white/30 hover:text-white">
+                                        <Icons.X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                                <form onSubmit={(e) => { e.preventDefault();
+                                    closeModal();
+                                    showToast('Escrow account created!', '🏦'); }}>
+                                    <div className="form-group">
+                                        <label>Account Name</label>
+                                        <input type="text" name="escrowName" placeholder="e.g. TechCorp Ltd" onChange={handleFormChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Initial Deposit (KES)</label>
+                                        <input type="number" name="escrowBalance" placeholder="e.g. 100000" onChange={handleFormChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Purpose</label>
+                                        <select name="escrowPurpose" onChange={handleFormChange}>
+                                            <option value="property">Property Purchase</option>
+                                            <option value="trade">Trade / Import</option>
+                                            <option value="services">Services Payment</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" className="btn-primary w-full py-3 rounded-full text-white font-semibold text-sm">
+                                        <span>Create Escrow Account</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {/* Instrument Modal */}
+                        <div className={`modal-overlay ${modalOpen === 'instrument' ? 'open' : ''}`} onClick={closeModal}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-white font-bold text-lg">📄 Request Bank Instrument</h3>
+                                    <button onClick={closeModal} className="text-white/30 hover:text-white">
+                                        <Icons.X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                                <form onSubmit={handleInstrumentRequest}>
+                                    <div className="form-group">
+                                        <label>Instrument Type</label>
+                                        <select name="instrumentType" onChange={handleFormChange} required>
+                                            <option value="LC">Letter of Credit (LC)</option>
+                                            <option value="BG">Bank Guarantee (BG)</option>
+                                            <option value="SBLC">Standby LC (SBLC)</option>
+                                            <option value="DLC">Documentary LC (DLC)</option>
+                                            <option value="PoF">Proof of Funds (PoF)</option>
+                                            <option value="PoP">Proof of Payment (PoP)</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Amount (USD)</label>
+                                        <input type="text" name="instrumentAmount" placeholder="e.g. USD 50,000" onChange={handleFormChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Beneficiary</label>
+                                        <input type="text" name="instrumentBeneficiary" placeholder="Beneficiary name" onChange={handleFormChange} />
+                                    </div>
+                                    <button type="submit" className="btn-primary w-full py-3 rounded-full text-white font-semibold text-sm">
+                                        <span>Request Instrument</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {/* Loan Modal */}
+                        <div className={`modal-overlay ${modalOpen === 'loan' ? 'open' : ''}`} onClick={closeModal}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-white font-bold text-lg">💰 Apply for Loan</h3>
+                                    <button onClick={closeModal} className="text-white/30 hover:text-white">
+                                        <Icons.X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                                <form onSubmit={(e) => { e.preventDefault();
+                                    closeModal();
+                                    showToast('Loan application submitted!', '💰'); }}>
+                                    <div className="form-group">
+                                        <label>Loan Amount (KES)</label>
+                                        <input type="number" name="loanAmount" placeholder="e.g. 500000" onChange={handleFormChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Term</label>
+                                        <select name="loanTerm" onChange={handleFormChange} required>
+                                            <option value="6 months">6 months</option>
+                                            <option value="12 months">12 months</option>
+                                            <option value="24 months">24 months</option>
+                                            <option value="36 months">36 months</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Purpose</label>
+                                        <select name="loanPurpose" onChange={handleFormChange}>
+                                            <option value="business">Business Expansion</option>
+                                            <option value="import">Import Financing</option>
+                                            <option value="property">Property Purchase</option>
+                                            <option value="personal">Personal</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" className="btn-primary w-full py-3 rounded-full text-white font-semibold text-sm">
+                                        <span>Apply for Loan</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        {/* Insurance Modal */}
+                        <div className={`modal-overlay ${modalOpen === 'insurance' ? 'open' : ''}`} onClick={closeModal}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-white font-bold text-lg">🛡️ Import Insurance</h3>
+                                    <button onClick={closeModal} className="text-white/30 hover:text-white">
+                                        <Icons.X className="w-5 h-5" />
+                                    </button>
+                                </div>
+                                <form onSubmit={(e) => { e.preventDefault();
+                                    closeModal();
+                                    showToast('Insurance request submitted!', '🛡️'); }}>
+                                    <div className="form-group">
+                                        <label>Shipment Value (USD)</label>
+                                        <input type="number" name="insuranceValue" placeholder="e.g. 25000" onChange={handleFormChange} required />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Coverage Type</label>
+                                        <select name="insuranceType" onChange={handleFormChange} required>
+                                            <option value="all-risk">All Risk</option>
+                                            <option value="theft">Theft & Pilferage</option>
+                                            <option value="damage">Damage & Breakage</option>
+                                            <option value="total-loss">Total Loss Only</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Shipping Origin</label>
+                                        <input type="text" name="insuranceOrigin" placeholder="e.g. China, Turkey, Germany" onChange={handleFormChange} />
+                                    </div>
+                                    <button type="submit" className="btn-primary w-full py-3 rounded-full text-white font-semibold text-sm">
+                                        <span>Request Insurance</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ─── Render ──────────────────────────────────────────────────────────
+            try {
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(<App />);
+            } catch (e) {
+                console.error('React error:', e);
+                document.getElementById('loading-screen').classList.add('hidden');
+            }
+        </script>
+    </body>
+    </html>
